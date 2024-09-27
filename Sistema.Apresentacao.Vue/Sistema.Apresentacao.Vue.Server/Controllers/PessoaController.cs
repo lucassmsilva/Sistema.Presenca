@@ -5,6 +5,8 @@ using Sistema.Core.Dominio.Repositories;
 
 namespace Sistema.Apresentacao.Vue.Server.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class PessoaController : Controller
     {
         private readonly IPessoaRepository _pessoaRepository;
@@ -18,9 +20,9 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
 
 
         [HttpPost("create", Name = "CreateUser")]
-        public IActionResult Create(string nome, string cpf, DateTime? dtNasc, CancellationToken cancellationToken)
+        public IActionResult Create([FromBody]Pessoa pessoa, CancellationToken cancellationToken)
         {
-            _pessoaRepository.Create(new Pessoa(nome, cpf, dtNasc));
+            _pessoaRepository.Create(pessoa);
 
             _unityOfWork.Commit(cancellationToken);
 

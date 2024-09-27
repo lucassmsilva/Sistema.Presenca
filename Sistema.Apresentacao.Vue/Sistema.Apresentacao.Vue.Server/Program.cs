@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Sistema.Infraestrutura.Persistencia;
 using Sistema.Infraestrutura.Persistencia.Context;
 using System;
@@ -11,6 +13,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+if (builder.Environment.IsDevelopment())
+{
+    Console.WriteLine("Adding cors...");
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(name: "corsPolicy",
+                          policy =>
+                          {
+                              policy.AllowAnyOrigin();
+                              policy.AllowAnyMethod();
+                              policy.AllowAnyHeader();
+                          });
+    });
+}
+
 var app = builder.Build();
 
 CreateDatabase(app);
@@ -22,6 +39,7 @@ app.UseStaticFiles();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors("corsPolicy");
     app.UseSwagger();
     app.UseSwaggerUI();
 }
