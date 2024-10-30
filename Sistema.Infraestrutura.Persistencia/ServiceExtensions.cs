@@ -16,6 +16,10 @@ namespace Sistema.Infraestrutura.Persistencia
             services.AddDbContext<AppDbContext>(OptionsBuilderExtensions => OptionsBuilderExtensions.UseSqlServer(connectionString));
             services.AddScoped<IUnityOfWork, UnitOfWork>();
             services.AddScoped<IPessoaRepository, PessoaRepository>();
+            services.AddScoped<ITurmaRepository, TurmaRepository>();
+            services.AddScoped<IPresencaRepository, PresencaRepository>();
+            services.AddScoped<IPessoaContatoRepository, PessoaContatoRepository>();
+            services.AddScoped<IPessoaEnderecoRepository, PessoaEnderecoRepository>();
         }
     }
 }
