@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Core.Dominio.Repositories
 {
-    public interface ITurmaRepository : IBaseRepository<Turma>
+    public interface ITurmaRepository : IBaseRepository<TurmaModel>
     {
     }
 }

@@ -13,7 +13,7 @@ namespace Sistema.Core.Aplicacao.Services
             _presencaRepository = presencaRepository;
         }
 
-        public bool RegistrarPresenca(Presenca presenca)
+        public bool RegistrarPresenca(PresencaModel presenca)
         {
             _presencaRepository.Create(presenca);
 
@@ -21,14 +21,14 @@ namespace Sistema.Core.Aplicacao.Services
 
         }
 
-        public bool CancelarPresenca(Pessoa pessoa)
+        public bool CancelarPresenca(PessoaModel pessoa)
         {
             // Implement logic to cancel a person's presence
             // Use _presencaRepository and _unityOfWork as needed
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Presenca> ObterRegistrosPresenca(DateTime dataInicial, DateTime dataFinal)
+        public IEnumerable<PresencaModel> ObterRegistrosPresenca(DateTime dataInicial, DateTime dataFinal)
         {
             // Implement logic to retrieve presence records within a date range
             // Use _presencaRepository to fetch the data

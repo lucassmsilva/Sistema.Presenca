@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Core.Dominio.Repositories
 {
-    public interface IPessoaEnderecoRepository : IBaseRepository<PessoaEndereco>
+    public interface IPessoaEnderecoRepository : IBaseRepository<PessoaEnderecoModel>
     {
     }
 }

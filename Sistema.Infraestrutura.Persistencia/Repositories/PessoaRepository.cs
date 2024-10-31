@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Infraestrutura.Persistencia.Repositories
 {
-    public class PessoaRepository : BaseRepository<Pessoa>, IPessoaRepository
+    public class PessoaRepository : BaseRepository<PessoaModel>, IPessoaRepository
     {
         public PessoaRepository(AppDbContext context) : base(context) { }
 

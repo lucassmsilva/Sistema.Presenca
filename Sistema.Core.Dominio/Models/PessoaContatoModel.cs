@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace Sistema.Core.Dominio.Models
 {
-    public class Turma : BaseEntity
+    public class PessoaContatoModel : BaseEntity
     {
-        public long IdProfessor { get; set; }
-
-        public string NomeTurma { get; set; }
 
     }
-        
 }

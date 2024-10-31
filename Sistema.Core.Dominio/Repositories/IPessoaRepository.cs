@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Core.Dominio.Repositories
 {
-    public interface IPessoaRepository : IBaseRepository<Pessoa>
+    public interface IPessoaRepository : IBaseRepository<PessoaModel>
     {
          Task<bool> CPFExistsAsync(string cpf);
 

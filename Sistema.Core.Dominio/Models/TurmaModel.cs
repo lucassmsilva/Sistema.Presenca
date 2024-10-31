@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Sistema.Core.Dominio.Models
 {
-    public class PessoaContato : BaseEntity
+    public class TurmaModel : BaseEntity
     {
-        public string ?Telefone { get; set; }
+        public long IdProfessor { get; set; }
 
-        public string? Whatsapp { get; set; }    
+        public string NomeTurma { get; set; }
 
-        public string? Email { get; set; }   
     }
+        
 }

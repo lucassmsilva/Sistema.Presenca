@@ -12,6 +12,6 @@ namespace Sistema.Infraestrutura.Persistencia.Context
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<Pessoa> Pessoas { get; set; }
+        public DbSet<PessoaModel> Pessoas { get; set; }
     }
 }

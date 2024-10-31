@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Core.Dominio.Models
 {
-    public class PessoaEndereco : BaseEntity
+    public class PessoaEnderecoModel : BaseEntity
     {
         public string Logradouro { get; set; } // Renomeado de Rua para Logradouro
         public int Numero { get; set; } // Mudado de long para int
@@ -19,7 +19,7 @@ namespace Sistema.Core.Dominio.Models
         public string Cep { get; set; }
 
         // Construtor
-        public PessoaEndereco(string logradouro, int numero, string complemento, string quadra, string bairro, string cidade, string estado, string cep)
+        public PessoaEnderecoModel(string logradouro, int numero, string complemento, string quadra, string bairro, string cidade, string estado, string cep)
         {
             Logradouro = logradouro;
             Numero = numero;

@@ -1,4 +1,4 @@
-﻿using DomainPessoa = Sistema.Core.Dominio.Models.Pessoa;
+﻿using Sistema.Core.Dominio.Models;
 
 namespace Sistema.Core.Aplicacao.UseCases.Pessoa
 {
@@ -7,19 +7,20 @@ namespace Sistema.Core.Aplicacao.UseCases.Pessoa
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
+        public string Telefone { get; set; }
         public string Cpf { get; set; }
-        public DateTime DataNascimento { get; set; }
-        public int Idade { get; set; }
+        public DateTime? DataNascimento { get; set; }        
 
-        public static PessoaDTO FromEntity(DomainPessoa pessoa)
+        public static PessoaDTO FromEntity(PessoaModel pessoa)
         {
-            return new PessoaDTO
+            return new()
             {
                 Id = pessoa.Id,
                 Nome = pessoa.Nome,
                 Cpf = pessoa.Cpf,
                 DataNascimento = pessoa.DataNascimento,
-                Idade = DateTime.Now.Year - pessoa.DataNascimento.Year
+                Email = pessoa.Email,
+                Telefone = pessoa.Telefone,
             };
         }
     }

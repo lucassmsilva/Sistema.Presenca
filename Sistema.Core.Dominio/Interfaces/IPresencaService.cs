@@ -13,6 +13,6 @@ namespace Sistema.Core.Dominio.Interfaces
         bool RegistrarPresenca<T>(T pessoa);
         bool CancelarPresenca<T>(IEnumerable<T> pessoas);
         bool CancelarPresenca<T>(T pessoa);
-        IEnumerable<Presenca> ObterRegistrosPresenca(DateTime dataInicial, DateTime dataFinal);
+        IEnumerable<PresencaModel> ObterRegistrosPresenca(DateTime dataInicial, DateTime dataFinal);
     }
 }

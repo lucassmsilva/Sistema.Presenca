@@ -37,7 +37,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
                 return BadRequest(validationResult.Errors);
             }
 
-            var pessoa = new Pessoa(command.Nome, command.CPF, command.DataNascimento);
+            var pessoa = command.ToPessoa();
 
             _pessoaRepository.Create(pessoa);
             await _unityOfWork.Commit(cancellationToken);
@@ -81,10 +81,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
                 return BadRequest(validationResult.Errors);
             }
 
-
-            pessoa.Nome = command.Nome;
-            pessoa.Cpf = command.CPF;
-            pessoa.DataNascimento = command.DataNascimento;
+            pessoa = command.MapToPessoa(pessoa);   
 
             _pessoaRepository.Update(pessoa);
             await _unityOfWork.Commit(cancellationToken);

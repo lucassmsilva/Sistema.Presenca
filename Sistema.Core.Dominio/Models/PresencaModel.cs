@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Core.Dominio.Models
 {
-    public class Presenca : BaseEntity
+    public class PresencaModel : BaseEntity
     {
         public long IdPessoa { get; set; }  
         public bool Presente { get; set; }  

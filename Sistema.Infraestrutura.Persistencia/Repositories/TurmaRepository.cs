@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Infraestrutura.Persistencia.Repositories
 {
-    public class TurmaRepository : BaseRepository<Turma>, ITurmaRepository
+    public class TurmaRepository : BaseRepository<TurmaModel>, ITurmaRepository
     {
         public TurmaRepository(AppDbContext context): base(context) { }
     }

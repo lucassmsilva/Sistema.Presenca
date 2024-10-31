@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Infraestrutura.Persistencia.Repositories
 {
-    public class PresencaRepository : BaseRepository<Presenca>, IPresencaRepository
+    public class PresencaRepository : BaseRepository<PresencaModel>, IPresencaRepository
     {
         public PresencaRepository(AppDbContext context): base(context) { }
     }

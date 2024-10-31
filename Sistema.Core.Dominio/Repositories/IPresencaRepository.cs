@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Core.Dominio.Repositories
 {
-    public interface IPresencaRepository : IBaseRepository<Presenca>
+    public interface IPresencaRepository : IBaseRepository<PresencaModel>
     {
     }
 }

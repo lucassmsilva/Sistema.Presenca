@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Infraestrutura.Persistencia.Repositories
 {
-    public class PessoaEnderecoRepository : BaseRepository<PessoaEndereco>, IPessoaEnderecoRepository
+    public class PessoaEnderecoRepository : BaseRepository<PessoaEnderecoModel>, IPessoaEnderecoRepository
     {
         public PessoaEnderecoRepository(AppDbContext context): base(context) { }
     }
