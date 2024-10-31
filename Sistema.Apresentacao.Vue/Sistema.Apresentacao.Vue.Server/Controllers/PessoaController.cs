@@ -56,10 +56,10 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
 
             var list = new List<PessoaDTO>();
 
-            foreach (var result in results) 
-             {
+            foreach (var result in results)
+            {
                 list.Add(PessoaDTO.FromEntity(result));
-             }
+            }
 
             return Ok(list);
         }
@@ -90,6 +90,21 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             await _unityOfWork.Commit(cancellationToken);
 
             return Ok(PessoaDTO.FromEntity(pessoa));
+        }
+
+        [HttpDelete("{id}", Name = "DeletePessoa")]
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        {
+            var pessoa = await _pessoaRepository.Get(id, cancellationToken);
+            if (pessoa == null)
+            {
+                return NotFound("Pessoa não encontrada");
+            }
+
+             _pessoaRepository.Delete(pessoa);
+
+            await _unityOfWork.Commit(cancellationToken);
+            return Ok("Deleted");
         }
     }
 }
