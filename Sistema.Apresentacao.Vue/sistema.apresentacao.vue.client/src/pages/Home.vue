@@ -1,3 +1,3 @@
 <template>
-    Seja vem vindo
+    Seja bem vindo ao Sistema Presença
 </template>

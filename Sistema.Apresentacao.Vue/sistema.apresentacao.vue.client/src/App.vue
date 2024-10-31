@@ -58,19 +58,31 @@
             const menu = [
                 {
                     label: 'Início',
-                    icon: 'pi pi-fw pi-home',
+                    icon: 'pi pi-home',
                     to: '/',
                     command: () => router.push('/')
                 },
                 {
                     label: 'Pessoas',
-                    icon: 'pi pi-fw pi-users',
+                    icon: 'pi pi-users',
                     to: '/pessoa',
                     command: () => router.push('/pessoa')
                 },
                 {
+                    label: 'Turma',
+                    icon: 'pi pi-book',
+                    to: '/pessoa',
+                    command: () => router.push('/turma')
+                },
+                {
+                    label: 'Presença',
+                    icon: 'pi pi-check-square',
+                    to: '/pessoa',
+                    command: () => router.push('/turma')
+                },
+                {
                     label: 'Configuraçoes',
-                    icon: 'pi pi-fw pi-cog',
+                    icon: 'pi pi-cog',
                     to: '/configuracoes',
                     command: () => router.push('/configuracoes')
                 }

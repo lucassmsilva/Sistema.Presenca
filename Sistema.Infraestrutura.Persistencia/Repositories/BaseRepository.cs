@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sistema.Core.Dominio.Interfaces;
+using Sistema.Core.Dominio.Models;
 using Sistema.Infraestrutura.Persistencia.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,5 +47,10 @@ namespace Sistema.Infraestrutura.Persistencia.Repositories
         {
             return await Context.Set<T>().ToListAsync(cancellationToken);
         }
+
+        
+        public async Task<List<T>> Search(Expression<Func<T, bool>> filter, CancellationToken cancellationToken) =>
+            await Context.Set<T>().Where(filter).ToListAsync(cancellationToken);
     }
+
 }

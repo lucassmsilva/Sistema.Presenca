@@ -4,8 +4,9 @@ import App from './App.vue';
 import router from './router.js';
 import ToastService from 'primevue/toastservice'
 import Aura from '@primevue/themes/aura';
+import 'primeicons/primeicons.css'
+import 'primeflex/primeflex.css';
 
-// Importações dos componentes do PrimeVue
 import Button from 'primevue/button';
 import Menu from 'primevue/menu';
 import Menubar from 'primevue/menubar';
@@ -39,18 +40,18 @@ app.use(PrimeVue, {
 });
 
 app.component('PButton', Button);
-app.component('Menu', Menu);
-app.component('Menubar', Menubar);
-app.component('Calendar', Calendar);
+app.component('PMenu', Menu);
+app.component('PMenubar', Menubar);
+app.component('PCalendar', Calendar);
 app.component('PanelMenu', PanelMenu);
 app.component('InputText', InputText);
 app.component('InputMask', InputMask);
 app.component('DataTable', DataTable);
-app.component('Column', Column);
-app.component('Dialog', Dialog);
-app.component('Toast', Toast);
-app.component('Card', Card);
-app.component('Dropdown', Dropdown);
+app.component('PColumn', Column);
+app.component('PDialog', Dialog);
+app.component('PToast', Toast);
+app.component('PCard', Card);
+app.component('PDropdown', Dropdown);
 
 
 app.mount('#app');

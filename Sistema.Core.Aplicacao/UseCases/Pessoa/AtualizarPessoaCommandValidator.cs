@@ -1,17 +1,16 @@
 ﻿using FluentValidation;
-using Sistema.Core.Dominio.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace Sistema.Core.Aplicacao.UseCases.Pessoa
 {
-    public class CriarPessoaCommandValidator : AbstractValidator<CriarPessoaCommand>
+    public class AtualizarPessoaCommandValidator  : AbstractValidator<AtualizarPessoaCommand>
     {
-
-        private readonly IPessoaRepository _pessoaRepository;
-
-        public CriarPessoaCommandValidator(IPessoaRepository pessoaRepository)
+        public AtualizarPessoaCommandValidator()
         {
-
-             _pessoaRepository = pessoaRepository;
-
             RuleFor(x => x.Nome)
                 .NotEmpty()
                 .WithMessage("O nome é obrigatório")
@@ -25,9 +24,7 @@ namespace Sistema.Core.Aplicacao.UseCases.Pessoa
                 .NotEmpty()
                 .WithMessage("O CPF é obrigatório")
                 .Must(BeValidCPF)
-                .WithMessage("CPF inválido")
-                .MustAsync(BeUniqueCPF)
-                .WithMessage("CPF já cadastrado");
+                .WithMessage("CPF inválido");
 
             RuleFor(x => x.DataNascimento)
                 .NotEmpty()
@@ -49,15 +46,6 @@ namespace Sistema.Core.Aplicacao.UseCases.Pessoa
             if (cpf.Distinct().Count() == 1) return false;
 
             return true; // Adicione aqui a lógica completa de validação de CPF
-        }
-
-        private async Task<bool> BeUniqueCPF(string cpf, CancellationToken cancellationToken)
-        {
-            if (string.IsNullOrEmpty(cpf)) return false;
-            
-            // Check database for CPF existence
-            var pessoaExists = await _pessoaRepository.CPFExistsAsync(cpf);
-            return !pessoaExists;
         }
 
         private bool BeValidBirthDate(DateTime birthDate)
