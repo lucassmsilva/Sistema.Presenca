@@ -20,6 +20,10 @@ import Dialog from 'primevue/dialog';
 import Toast from 'primevue/toast';
 import Card from 'primevue/card';
 import Dropdown from 'primevue/dropdown';
+import FloatLabel from 'primevue/floatlabel';
+import Fieldset from 'primevue/fieldset';
+import CustomDatatable from './components/data/CustomDatatable.vue';
+import CustomColumn from './components/data/CustomColumn.vue';
 
 
 const app = createApp(App);
@@ -47,11 +51,14 @@ app.component('PanelMenu', PanelMenu);
 app.component('InputText', InputText);
 app.component('InputMask', InputMask);
 app.component('DataTable', DataTable);
+app.component('FloatLabel', FloatLabel);
+app.component('Fieldset', Fieldset);
 app.component('PColumn', Column);
 app.component('PDialog', Dialog);
 app.component('PToast', Toast);
 app.component('PCard', Card);
-app.component('PDropdown', Dropdown);
+app.component('CustomDatatable', CustomDatatable);
+app.component('CustomColumn', CustomColumn);
 
 
 app.mount('#app');

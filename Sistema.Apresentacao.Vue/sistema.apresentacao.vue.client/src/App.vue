@@ -78,7 +78,7 @@
                     label: 'Presença',
                     icon: 'pi pi-check-square',
                     to: '/pessoa',
-                    command: () => router.push('/turma')
+                    command: () => router.push('/presenca')
                 },
                 {
                     label: 'Configuraçoes',
