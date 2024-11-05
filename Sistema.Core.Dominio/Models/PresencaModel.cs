@@ -9,7 +9,7 @@ namespace Sistema.Core.Dominio.Models
 {
     public class PresencaModel : BaseEntity
     {
-        public long IdPessoa { get; set; }  
+        public int IdPessoa { get; set; }  
         public bool Presente { get; set; }  
         public DateTime DataCadastro { get; set; }
         public DateTime HorarioInicio { get; set; }

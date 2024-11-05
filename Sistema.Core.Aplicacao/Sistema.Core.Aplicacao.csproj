@@ -16,9 +16,4 @@
     <ProjectReference Include="..\Sistema.Core.Dominio\Sistema.Core.Dominio.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UseCases\Turma\" />
-    <Folder Include="UseCases\Presenca\" />
-  </ItemGroup>
-
 </Project>

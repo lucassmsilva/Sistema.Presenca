@@ -26,7 +26,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
         }
 
 
-        [HttpPost("create", Name = "CreateUser")]
+        [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CriarPessoaCommand command, CancellationToken cancellationToken)
         {
 

@@ -12,13 +12,25 @@ namespace Sistema.Infraestrutura.Persistencia
     {
         public static void ConfigurePersistenceApp(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("SqlServer");
-            services.AddDbContext<AppDbContext>(OptionsBuilderExtensions => OptionsBuilderExtensions.UseSqlServer(connectionString));
+            var databaseType = configuration["DatabaseType"]; // Alternativa direta
+            var connectionString = configuration.GetConnectionString(databaseType);
+
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                if (databaseType == "Postgrees")
+                {
+                    options.UseNpgsql(connectionString, b => b.MigrationsAssembly("Sistema.Infraestrutura.Persistencia"));
+                }
+                else if (databaseType == "SqlServer")
+                {
+                    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Sistema.Infraestrutura.Persistencia"));
+                }
+            });
+
             services.AddScoped<IUnityOfWork, UnitOfWork>();
             services.AddScoped<IPessoaRepository, PessoaRepository>();
             services.AddScoped<ITurmaRepository, TurmaRepository>();
             services.AddScoped<IPresencaRepository, PresencaRepository>();
-            services.AddScoped<IPessoaContatoRepository, PessoaContatoRepository>();
             services.AddScoped<IPessoaEnderecoRepository, PessoaEnderecoRepository>();
         }
     }

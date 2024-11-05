@@ -9,7 +9,7 @@ namespace Sistema.Core.Dominio.Models
 {
     public class TurmaModel : BaseEntity
     {
-        public long IdProfessor { get; set; }
+        public int IdProfessor { get; set; }
 
         public string NomeTurma { get; set; }
 
