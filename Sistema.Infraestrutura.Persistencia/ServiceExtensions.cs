@@ -25,6 +25,11 @@ namespace Sistema.Infraestrutura.Persistencia
                 {
                     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Sistema.Infraestrutura.Persistencia"));
                 }
+                else if (databaseType == "MySql")
+                {
+                    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+                        b => b.MigrationsAssembly("Sistema.Infraestrutura.Persistencia"));
+                }
             });
 
             services.AddScoped<IUnityOfWork, UnitOfWork>();
