@@ -10,12 +10,8 @@ namespace Sistema.Core.Dominio.Models
     public class PresencaModel : BaseEntity
     {
         public int IdPessoa { get; set; }  
+        public int IdTurmaHorario { get; set; } 
         public bool Presente { get; set; }  
-        public DateTime DataCadastro { get; set; }
-        public DateTime HorarioInicio { get; set; }
-        public DateTime HorarioFinal { get; set; }
-        public long CreatedBy { get; set; }
-        public long UpdatedBy { get; set;}
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Sistema.Core.Aplicacao.Utils;
 using Sistema.Core.Dominio.Repositories;
 
 
@@ -21,9 +22,15 @@ namespace Sistema.Core.Aplicacao.UseCases.Turma
             .MinimumLength(3)
             .WithMessage("O nome deve ter no mínimo 3 caracteres")
             .MaximumLength(100)
-            .WithMessage("O nome deve ter no máximo 100 caracteres")
-            .MustAsync(BeUniqueTurma)
-            .WithMessage("CPF já cadastrado");
+            .WithMessage("O nome deve ter no máximo 100 caracteres");
+
+            
+            RuleFor(x => x.Sigla)
+            .NotEmpty()
+            .WithMessage("O nome é obrigatório")
+            .MinimumLength(3)
+            .MustAsync(BeUniqueTurmaSigla)
+            .WithMessage("Sigla já cadastrada");
 
             RuleFor(x => x.IdProfessor)
                 .NotEmpty()
@@ -42,12 +49,13 @@ namespace Sistema.Core.Aplicacao.UseCases.Turma
         }
 
         
-        private async Task<bool> BeUniqueTurma(string turma, CancellationToken cancellationToken)
+        private async Task<bool> BeUniqueTurmaSigla(string turma, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(turma)) return false;
 
             // Check database for turma existence
-            var pessoaExists = await _turmaRepository.TurmaExistsAsync(CriarTurmaCommand.NormalizeTurmaName(turma));
+            var pessoaExists = await _turmaRepository.TurmaExistsAsync(StringUtils.NormalizeName(turma));
+
             return !pessoaExists;
         }
     }

@@ -23,16 +23,16 @@ namespace Sistema.Core.Aplicacao.UseCases.Pessoa
 
 
             RuleFor(x => x.Email)
-             .NotEmpty()
-             .WithMessage("O email é obrigatório")
-             .EmailAddress()
-             .WithMessage("Email inválido");
+                .NotEmpty()
+                .WithMessage("O email é obrigatório")
+                .EmailAddress()
+                .WithMessage("Email inválido");
 
             RuleFor(x => x.Telefone)
-            .NotEmpty()
-            .WithMessage("O telefone é obrigatório")
-            .Must(TelefoneValido)
-            .WithMessage("Número de telefone inválido para o Brasil");
+                .NotEmpty()
+                .WithMessage("O telefone é obrigatório")
+                .Must(TelefoneValido)
+                .WithMessage("Número de telefone inválido para o Brasil");
 
             RuleFor(x => x.CPF)
                 .NotEmpty()

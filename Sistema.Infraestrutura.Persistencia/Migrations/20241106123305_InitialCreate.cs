@@ -72,6 +72,8 @@ namespace Sistema.Infraestrutura.Persistencia.Migrations
                     IdProfessor = table.Column<int>(type: "int", nullable: false),
                     NomeTurma = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    Sigla = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     DateCreated = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
                     DateUpdated = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
                     DateDeleted = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false)

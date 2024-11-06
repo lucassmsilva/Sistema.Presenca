@@ -15,7 +15,7 @@ namespace Sistema.Infraestrutura.Persistencia.Repositories
 
             // Verifica se existe alguma pessoa com o CPF fornecido
             return await Context.Turmas
-                .AnyAsync(p => p.NomeTurma == turma);
+                .AnyAsync(p => p.Sigla == turma);
         }
     }
 }

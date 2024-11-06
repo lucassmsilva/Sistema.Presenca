@@ -8,7 +8,6 @@ docker run -p 5432:5432 -e POSTGRES_PASSWORD=1234 postgres
 # SQL SERVER
 docker run --name sqlserver -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=1q2w3e4r@#$" -p 1433:1433 -d mcr.microsoft.com/mssql/server
 
-
 # LIMPAR MIGRAÇÕES
 dotnet ef migrations remove --project "./Sistema.Infraestrutura.Persistencia/Sistema.Infraestrutura.Persistencia.csproj" --startup-project "./Sistema.Apresentacao.Vue/Sistema.Apresentacao.Vue.Server/Sistema.Apresentacao.Vue.Server.csproj"
 

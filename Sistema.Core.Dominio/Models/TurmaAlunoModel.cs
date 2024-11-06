@@ -7,14 +7,10 @@ using System.Threading.Tasks;
 
 namespace Sistema.Core.Dominio.Models
 {
-    public class TurmaModel : BaseEntity
+    public class TurmaAlunoModel : BaseEntity
     {
-        public int IdProfessor { get; set; }
+        public int IdTurma {get; set;}
 
-        public string NomeTurma { get; set; }
-
-        public string Sigla { get; set; }   
-
+        public int IdPessoa {get; set;} 
     }
-        
 }

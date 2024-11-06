@@ -12,7 +12,7 @@ using Sistema.Infraestrutura.Persistencia.Context;
 namespace Sistema.Infraestrutura.Persistencia.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241105214711_InitialCreate")]
+    [Migration("20241106123305_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -129,6 +129,10 @@ namespace Sistema.Infraestrutura.Persistencia.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("NomeTurma")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Sigla")
                         .IsRequired()
                         .HasColumnType("longtext");
 

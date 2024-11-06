@@ -129,6 +129,10 @@ namespace Sistema.Infraestrutura.Persistencia.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Sigla")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.ToTable("Turmas");
