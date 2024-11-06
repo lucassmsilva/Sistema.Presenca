@@ -15,9 +15,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sistema.Infraestrutura.Pers
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sistema.Apresentacao", "Sistema.Apresentacao", "{0F8699D5-CA51-485A-99CA-AD218EC3EF96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sistema.Apresentacao.Vue.Server", "Sistema.Apresentacao.Vue\Sistema.Apresentacao.Vue.Server\Sistema.Apresentacao.Vue.Server.csproj", "{9AA48AF1-E455-4767-84AE-0385199DAADD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sistema.Apresentacao.Vue.Server", "Sistema.Apresentacao.Vue\Sistema.Apresentacao.Vue.Server\Sistema.Apresentacao.Vue.Server.csproj", "{9AA48AF1-E455-4767-84AE-0385199DAADD}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "sistema.apresentacao.vue.client", "Sistema.Apresentacao.Vue\sistema.apresentacao.vue.client\sistema.apresentacao.vue.client.esproj", "{CBF43C45-5B2D-4850-B7DA-4292E3E43009}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{DB8F8C7F-8263-4D82-A1B9-7C9C1FC80456}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

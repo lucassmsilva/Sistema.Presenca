@@ -11,12 +11,12 @@ namespace Sistema.Core.Dominio.Models
     {
         public string Logradouro { get; set; } // Renomeado de Rua para Logradouro
         public int Numero { get; set; } // Mudado de long para int
-        public string Complemento { get; set; }
-        public string Quadra { get; set; }
-        public string Bairro { get; set; }
-        public string Cidade { get; set; }
-        public string Estado { get; set; } // Adicionado campo Estado
-        public string Cep { get; set; }
+        public string Complemento { get; set; } = string.Empty;
+        public string Quadra { get; set; } = string.Empty;
+        public string Bairro { get; set; } = string.Empty;
+        public string Cidade { get; set; } = string.Empty;
+        public string Estado { get; set; } = string.Empty;// Adicionado campo Estado
+        public string Cep { get; set; } = string.Empty;
 
         // Construtor
         public PessoaEnderecoModel(string logradouro, int numero, string complemento, string quadra, string bairro, string cidade, string estado, string cep)

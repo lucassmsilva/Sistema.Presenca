@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="UseCases\PessoaEndereco\" />
-    <Folder Include="UseCases\TurmaHorario\" />
   </ItemGroup>
 
 </Project>

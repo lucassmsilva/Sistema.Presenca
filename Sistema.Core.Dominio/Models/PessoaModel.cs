@@ -5,15 +5,15 @@ namespace Sistema.Core.Dominio.Models
 {
     public class PessoaModel : BaseEntity
     {
-        public string Nome { get; set; }
+        public string Nome { get; set; }= string.Empty;
 
         [StringLength(14)]
-        public string Cpf { get; set; }
+        public string Cpf { get; set; } = string.Empty;
         public DateTime? DataNascimento { get; set; }
 
         public string? Telefone { get; set; }
 
-        public string? Email { get; set; }
+        public string? Email { get; set; } 
         public PessoaModel(string nome, string cpf, DateTime? dataNascimento = null, string telefone = "", string email = "")
         {
             Nome = nome;

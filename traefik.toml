@@ -1,0 +1,28 @@
+﻿[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+  [entryPoints.websecure]
+    address = ":443"
+
+[certificatesResolvers.letsencrypt.acme]
+  email = "lucassmsilvadev@gmail.com"
+  storage = "/etc/traefik/acme.json"
+  [certificatesResolvers.letsencrypt.acme.httpChallenge]
+    entryPoint = "web"
+
+[http.routers]
+  [http.routers.presenca]
+    rule = "Host(`presenca.lucassmsilva.com.br`)"
+    entryPoints = ["web", "websecure"]
+    service = "webapp-service"
+    tls.certResolver = "letsencrypt"
+
+  [http.routers.localhost]
+    rule = "Host(`localhost`)"
+    entryPoints = ["web"]
+    service = "webapp-service"
+
+[http.services]
+  [http.services.webapp-service.loadBalancer]
+    [[http.services.webapp-service.loadBalancer.servers]]
+      url = "http://localhost:80"  # URL interna para seu app

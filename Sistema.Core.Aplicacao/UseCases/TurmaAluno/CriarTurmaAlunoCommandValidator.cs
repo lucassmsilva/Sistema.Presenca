@@ -18,9 +18,8 @@ namespace Sistema.Core.Aplicacao.UseCases.TurmaAluno
             _pessoaRepository = pessoaRepository;
             
             RuleFor(x => x.IdPessoa)
-                .NotEmpty()
                 .MustAsync(PessoaExists)
-                .WithMessage("Professor não cadastrado");
+                .WithMessage("Aluno não cadastrado");
 
             
             RuleFor(x => x.IdTurma)
@@ -34,7 +33,6 @@ namespace Sistema.Core.Aplicacao.UseCases.TurmaAluno
         {
             if (id == 0) return false;
 
-            // Check database for CPF existence
             var pessoaExists = await _pessoaRepository.Get(id, cancellationToken);
             return pessoaExists != null;
         }

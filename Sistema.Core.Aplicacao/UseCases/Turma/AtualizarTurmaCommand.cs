@@ -9,11 +9,11 @@ namespace Sistema.Core.Aplicacao.UseCases.Turma
 {
     public class AtualizarTurmaCommand
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public int IdProfessor { get; set; }
         public string NomeTurma { get; set; } = string.Empty;
 
-        public string Sigla { get; set; }   
+        public string Sigla { get; set; } = string.Empty;
         public TurmaModel MapToTurma(TurmaModel turma)
         {
             turma.IdProfessor = IdProfessor;

@@ -15,7 +15,7 @@ namespace Sistema.Core.Aplicacao.UseCases.Turma
 
         public string NomeTurma { get; set; } = string.Empty;
 
-        public string Sigla { get; set; }   
+        public string Sigla { get; set; } = string.Empty;
 
         public TurmaModel ToTurma() => new TurmaModel
         {
