@@ -42,7 +42,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             _pessoaRepository.Create(pessoa);
             await _unityOfWork.Commit(cancellationToken);
 
-            return Ok("Created");
+            return Ok(pessoa);
         }
 
 
@@ -64,7 +64,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             return Ok(list);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] AtualizarPessoaCommand command, CancellationToken cancellationToken)
         {
             if (id != command.Id)
@@ -89,7 +89,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             return Ok(PessoaDTO.FromEntity(pessoa));
         }
 
-        [HttpDelete("{id}", Name = "DeletePessoa")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             var pessoa = await _pessoaRepository.Get(id, cancellationToken);

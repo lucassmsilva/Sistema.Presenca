@@ -16,3 +16,7 @@ dotnet ef migrations add InitialCreate --project "./Sistema.Infraestrutura.Persi
 
 # ATUALIZAR O BANCO DE DADOS
 dotnet ef database update --project "./Sistema.Infraestrutura.Persistencia/Sistema.Infraestrutura.Persistencia.csproj" --startup-project "./Sistema.Apresentacao.Vue/Sistema.Apresentacao.Vue.Server/Sistema.Apresentacao.Vue.Server.csproj"
+
+
+# BUILD
+docker build -t sistema-presenca

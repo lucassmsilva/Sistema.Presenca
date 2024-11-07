@@ -24,13 +24,14 @@ import FloatLabel from 'primevue/floatlabel';
 import Fieldset from 'primevue/fieldset';
 import CustomDatatable from './components/data/CustomDatatable.vue';
 import CustomColumn from './components/data/CustomColumn.vue';
-
+import ConfirmationService from 'primevue/confirmationservice';
 
 const app = createApp(App);
 
 
 app.use(router);
 app.use(ToastService);
+app.use(ConfirmationService);
 
 app.use(PrimeVue, {
     theme: {

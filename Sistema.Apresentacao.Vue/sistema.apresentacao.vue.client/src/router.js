@@ -1,13 +1,13 @@
 import { createMemoryHistory, createRouter } from 'vue-router'
 
-import Pessoa from './pages/Pessoa/Pessoa.vue'
-import Home from './pages/Home.vue'
-import Configuracoes from './pages/Configuracoes/Configuracoes.vue'
-import Turma from './pages/Turma/Turma.vue'
-import Presenca from './pages/Presenca/Presenca.vue'
+import Pessoa from './pages/Pessoa/PessoaPage.vue'
+import Home from './pages/HomePage.vue'
+import Configuracoes from './pages/Configuracoes/ConfiguracoesPage.vue'
+import Turma from './pages/Turma/TurmaPage.vue'
+import Presenca from './pages/Presenca/PresencaPage.vue'
 
 const routes = [
-    { path: '/', component: Home },
+    { path: '/', component: Pessoa },
     { path: '/pessoa', component: Pessoa },
     { path: '/turma', component: Turma },
     { path: '/presenca', component: Presenca },

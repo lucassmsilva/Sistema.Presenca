@@ -10,11 +10,9 @@ namespace Sistema.Core.Dominio.Models
         [StringLength(14)]
         public string Cpf { get; set; } = string.Empty;
         public DateTime? DataNascimento { get; set; }
-
-        public string? Telefone { get; set; }
-
         public string? Email { get; set; } 
-        public PessoaModel(string nome, string cpf, DateTime? dataNascimento = null, string telefone = "", string email = "")
+        public string? Telefone { get; set; }
+        public PessoaModel(string nome, string cpf, DateTime? dataNascimento = null, string email = "",string telefone = "")
         {
             Nome = nome;
             Cpf = cpf;

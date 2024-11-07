@@ -42,7 +42,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-RUN mkdir -p /https/
-COPY ["./https/aspnetapp.pfx", "/https/"]
-
 ENTRYPOINT ["dotnet", "Sistema.Apresentacao.Vue.Server.dll"]

@@ -8,6 +8,8 @@ export class Api {
             ...config
         });
 
+        this.baseURL = baseURL;
+
         // Add request interceptor
         this.instance.interceptors.request.use(
             (config) => {
@@ -19,10 +21,9 @@ export class Api {
     }
 
     async request(method, endpoint, { params = null, data = null } = {}) {
-        this.axiosConfig();
-
-
         let url = `${this.baseURL}${endpoint}`;
+
+        console.log(url)
 
         if (params) {
             const searchParams = new URLSearchParams();

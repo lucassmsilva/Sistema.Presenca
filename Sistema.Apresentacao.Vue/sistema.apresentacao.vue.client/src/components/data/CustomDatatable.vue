@@ -179,23 +179,23 @@ const handleColumnClick = (item, column) => {
   margin-bottom: 1rem;
 }
 
-::v-deep .table th,
-::v-deep .table td {
+:deep .table th,
+:deep .table td {
     padding: 12px;
     border: 1px solid #ddd;
     text-align: left;
 }
 
-::v-deep .table th {
+:deep .table th {
     background-color: #f5f5f5;
     font-weight: bold;
 }
 
-::v-deep .table tr:nth-child(even) {
+:deep .table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-::v-deep .table tr:hover {
+:deep .table tr:hover {
     background-color: #f5f5f5;
 }
 .group-row {

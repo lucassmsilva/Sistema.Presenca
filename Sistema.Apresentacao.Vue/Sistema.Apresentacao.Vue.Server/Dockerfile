@@ -1,6 +1,6 @@
 #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0.402 AS base
 USER app
 WORKDIR /app
 EXPOSE 8080
@@ -18,6 +18,16 @@ COPY ["Sistema.Apresentacao.Vue/sistema.apresentacao.vue.client/sistema.apresent
 RUN dotnet restore "./Sistema.Apresentacao.Vue/Sistema.Apresentacao.Vue.Server/./Sistema.Apresentacao.Vue.Server.csproj"
 COPY . .
 WORKDIR "/src/Sistema.Apresentacao.Vue/Sistema.Apresentacao.Vue.Server"
+
+# Instalar Node.js
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+RUN dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p 1q23234124s@!s223
+RUN dotnet dev-certs https --trust
+
 RUN dotnet build "./Sistema.Apresentacao.Vue.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
