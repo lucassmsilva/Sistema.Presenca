@@ -21,13 +21,22 @@ class Result {
         let errorMessage;
         let status;
 
+        let handleMessages = (data) => {
+            let finalMessage = "Erro na validação: ";
+            for (const message of data){
+                finalMessage += message.errorMessage + " | ";
+            }
+
+            return finalMessage;
+        }
+
         if (error.response) {
             status = error.response.status;
             
             // Handle specific status codes
             switch (status) {
                 case 400:
-                    errorMessage = error.response.data?.Message || 'Requisição inválida';
+                    errorMessage = error.response.data.length > 0 ? handleMessages(error.response.data) : error.response.data.Message || 'Requisição inválida';
                     break;
                 case 401:
                     errorMessage = 'Não autorizado';

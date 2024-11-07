@@ -13,14 +13,16 @@ namespace Sistema.Core.Aplicacao.UseCases.Turma
         public int IdProfessor { get; set; }
 
         public string NomeTurma { get; set; } = string.Empty;
+        public string Sigla { get; set; } = string.Empty;
 
-        
+
         public static TurmaDTO FromEntity(TurmaModel turma)
         {
             return new()
             {
                 IdProfessor = turma.IdProfessor,
                 NomeTurma = turma.NomeTurma,
+                Sigla = turma.Sigla,    
             };
         }
     }

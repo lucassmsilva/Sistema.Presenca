@@ -148,14 +148,15 @@ const toggleMenu = (model, event) => {
                     <label>Email</label>
                 </float-label>
 
-                <p-button @click="consultar" label="consultar"></p-button>
+                <p-button @click="consultar" icon="pi pi-search" label="Consultar"></p-button>
 
             </div>
         </Fieldset>
 
         <Toolbar class="mt-2">
             <template #start>
-                <p-button label="Cadastrar pessoa" icon="pi pi-plus" @click.stop="cadastro = !cadastro;"></p-button>
+                <p-button v-if="!cadastro" label="Cadastrar pessoa" severity="info" icon="pi pi-plus" @click.stop="cadastro = !cadastro;"></p-button>
+                <p-button v-if="cadastro" label="Voltar a lista" severity="info" icon="pi pi-arrow-left" @click.stop="cadastro = !cadastro;"></p-button>
             </template>
         </Toolbar>
 
@@ -208,18 +209,9 @@ const toggleMenu = (model, event) => {
                         <InputText id="email" v-model="pessoa.email" required autofocus />
                     </div>
 
-                    <p-button type="submit" :label="cLabel" class="p-mt-2" />
+                    <p-button type="submit" icon="pi pi-save" :label="cLabel" class="ml-2 mt-2" />
                 </div>
             </form>
         </div>
     </div>
 </template>
-
-<style scoped>
-.card {
-    background: var(--surface-card);
-    padding: 2rem;
-    border-radius: 10px;
-    margin-bottom: 1rem;
-}
-</style>
