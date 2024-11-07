@@ -49,7 +49,7 @@ namespace Sistema.Infraestrutura.Persistencia.Repositories
         }
 
 
-        public async Task<List<T>> Search(Expression<Func<T, bool>> filter, CancellationToken cancellationToken) =>
+        public virtual async Task<List<T>> Search(Expression<Func<T, bool>> filter, CancellationToken cancellationToken) =>
             await Context.Set<T>().Where(filter).ToListAsync(cancellationToken);
     }
 

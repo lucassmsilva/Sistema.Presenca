@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Sistema.Core.Aplicacao.UseCases.Pessoa;
+using Sistema.Core.Dominio.DTO.Pessoa;
 using Sistema.Core.Dominio.Interfaces;
 using Sistema.Core.Dominio.Models;
 using Sistema.Core.Dominio.Repositories;

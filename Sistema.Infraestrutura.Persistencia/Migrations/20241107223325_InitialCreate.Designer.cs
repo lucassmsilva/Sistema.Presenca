@@ -12,7 +12,7 @@ using Sistema.Infraestrutura.Persistencia.Context;
 namespace Sistema.Infraestrutura.Persistencia.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241106123305_InitialCreate")]
+    [Migration("20241107223325_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,21 @@ namespace Sistema.Infraestrutura.Persistencia.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("PessoaModelTurmaModel", b =>
+                {
+                    b.Property<int>("AlunosId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TurmasId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AlunosId", "TurmasId");
+
+                    b.HasIndex("TurmasId");
+
+                    b.ToTable("TurmaAlunos", (string)null);
+                });
 
             modelBuilder.Entity("Sistema.Core.Dominio.Models.PessoaModel", b =>
                 {
@@ -73,12 +88,6 @@ namespace Sistema.Infraestrutura.Persistencia.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("DataCadastro")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<DateTimeOffset>("DateCreated")
                         .HasColumnType("datetime(6)");
 
@@ -88,20 +97,14 @@ namespace Sistema.Infraestrutura.Persistencia.Migrations
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("HorarioFinal")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("HorarioInicio")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<int>("IdPessoa")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdTurmaHorario")
                         .HasColumnType("int");
 
                     b.Property<bool>("Presente")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<long>("UpdatedBy")
-                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -138,7 +141,40 @@ namespace Sistema.Infraestrutura.Persistencia.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdProfessor");
+
                     b.ToTable("Turmas");
+                });
+
+            modelBuilder.Entity("PessoaModelTurmaModel", b =>
+                {
+                    b.HasOne("Sistema.Core.Dominio.Models.PessoaModel", null)
+                        .WithMany()
+                        .HasForeignKey("AlunosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sistema.Core.Dominio.Models.TurmaModel", null)
+                        .WithMany()
+                        .HasForeignKey("TurmasId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Sistema.Core.Dominio.Models.TurmaModel", b =>
+                {
+                    b.HasOne("Sistema.Core.Dominio.Models.PessoaModel", "Professor")
+                        .WithMany("TurmasComoProfessor")
+                        .HasForeignKey("IdProfessor")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Professor");
+                });
+
+            modelBuilder.Entity("Sistema.Core.Dominio.Models.PessoaModel", b =>
+                {
+                    b.Navigation("TurmasComoProfessor");
                 });
 #pragma warning restore 612, 618
         }

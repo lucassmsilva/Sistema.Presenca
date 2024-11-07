@@ -1,19 +1,19 @@
-﻿using Sistema.Core.Aplicacao.UseCases.Pessoa;
+﻿using Sistema.Core.Dominio.DTO.Pessoa;
 using Sistema.Core.Dominio.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Sistema.Core.Aplicacao.UseCases.Turma
+namespace Sistema.Core.Dominio.DTO.Turma
 {
     public class TurmaDTO
     {
+        public int Id { get; set; }
         public int IdProfessor { get; set; }
 
         public string NomeTurma { get; set; } = string.Empty;
         public string Sigla { get; set; } = string.Empty;
+
+        public virtual PessoaDTO Professor { get; set; }
+        public virtual List<PessoaDTO> Alunos { get; set; }
+
 
 
         public static TurmaDTO FromEntity(TurmaModel turma)
@@ -22,7 +22,7 @@ namespace Sistema.Core.Aplicacao.UseCases.Turma
             {
                 IdProfessor = turma.IdProfessor,
                 NomeTurma = turma.NomeTurma,
-                Sigla = turma.Sigla,    
+                Sigla = turma.Sigla,
             };
         }
     }

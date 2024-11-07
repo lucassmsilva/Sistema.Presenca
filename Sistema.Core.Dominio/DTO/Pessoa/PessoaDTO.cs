@@ -1,6 +1,7 @@
 ﻿using Sistema.Core.Dominio.Models;
 
-namespace Sistema.Core.Aplicacao.UseCases.Pessoa
+
+namespace Sistema.Core.Dominio.DTO.Pessoa
 {
     public class PessoaDTO
     {

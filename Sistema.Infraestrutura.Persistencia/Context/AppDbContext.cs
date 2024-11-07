@@ -15,5 +15,20 @@ namespace Sistema.Infraestrutura.Persistencia.Context
         public DbSet<PessoaModel> Pessoas { get; set; }
         public DbSet<TurmaModel> Turmas { get; set; }
         public DbSet<PresencaModel> Presencas { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configuração do relacionamento Professor-Turma (one-to-many)
+            modelBuilder.Entity<TurmaModel>()
+                .HasOne(t => t.Professor)
+                .WithMany(p => p.TurmasComoProfessor)
+                .HasForeignKey(t => t.IdProfessor);
+
+            // Configuração do relacionamento Alunos-Turma (many-to-many)
+            modelBuilder.Entity<TurmaModel>()
+                .HasMany(t => t.Alunos)
+                .WithMany(p => p.Turmas)
+                .UsingEntity(j => j.ToTable("TurmaAlunos")); // Tabela de junção
+        }
     }
 }

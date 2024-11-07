@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Sistema.Core.Aplicacao.UseCases.Turma;
 using Sistema.Core.Dominio.Interfaces;
-using Sistema.Core.Dominio.Models;
+using Sistema.Core.Dominio.DTO.Turma;
 using Sistema.Core.Dominio.Repositories;
 
 namespace Sistema.Apresentacao.Vue.Server.Controllers
@@ -42,25 +42,19 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             _turmaRepository.Create(turma);
             await _unityOfWork.Commit(cancellationToken);
 
-            return Ok("Created");
+            return Ok(turma);
         }
 
 
         [HttpGet("search")]
         public async Task<IActionResult> Search(string? nome, CancellationToken cancellationToken)
         {
-            var results = await _turmaRepository.Search(
+            var results = await _turmaRepository
+                .Selecionar(
                 p => (string.IsNullOrEmpty(nome) || p.NomeTurma.Contains(nome)),
                 cancellationToken);
 
-            var list = new List<TurmaDTO>();
-
-            foreach (var result in results)
-            {
-                list.Add(TurmaDTO.FromEntity(result));
-            }
-
-            return Ok(list);
+            return Ok(results);
         }
 
         [HttpPut("{id}")]
@@ -88,7 +82,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             return Ok(TurmaDTO.FromEntity(turma));
         }
 
-        [HttpDelete("{id}", Name = "DeleteTurma")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             var turma = await _turmaRepository.Get(id, cancellationToken);

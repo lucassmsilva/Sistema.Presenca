@@ -15,6 +15,11 @@ namespace Sistema.Core.Dominio.Models
 
         public string Sigla { get; set; } = string.Empty;
 
+        // Relacionamento com o professor
+        public virtual PessoaModel Professor { get; set; }
+
+        // Relacionamento com os alunos
+        public virtual ICollection<PessoaModel> Alunos { get; set; }
     }
 
 }
