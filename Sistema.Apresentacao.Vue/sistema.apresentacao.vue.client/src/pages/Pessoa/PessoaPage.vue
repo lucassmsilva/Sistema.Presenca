@@ -5,7 +5,6 @@ import api from '../../services/api'
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import Toolbar from 'primevue/toolbar';
-import ConfirmDialog from 'primevue/confirmdialog';
 import { useConfirm } from "primevue/useconfirm";
 
 const menu = ref();
@@ -128,7 +127,6 @@ const toggleMenu = (model, event) => {
 </script>
 
 <template>
-    <ConfirmDialog></ConfirmDialog>
     <div class="w-full">
         <Fieldset class="m-0 p-0">
             <template #legend>

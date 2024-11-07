@@ -35,7 +35,7 @@
         <div class="w-full flex flex-column gap-2">
             <h2 class="mt-2">Registro de Presenças/Faltas</h2>
 
-            <CustomDatatable :values="computedPresenca" groupByKey="data">
+            <CustomDatatable :values="computedPresenca" groupByKey="data" rowSpanKey="turma">
 
 
                 <CustomColumn header="Ações" :exportable="false" style="width: 3rem">
@@ -45,16 +45,13 @@
                         <PMenu ref="menu" :model="menuModel" :popup="true" />
                     </template>
                 </CustomColumn>
-                <CustomColumn header="Turma" accessorKey="turma"></CustomColumn>
+                <CustomColumn header="Turma" accessorKey="turma" :expanded="true"></CustomColumn>
                 <CustomColumn header="Nome" accessorKey="nome"></CustomColumn>
                 <CustomColumn header="Presente" accessorKey="presente">
                     <template #body="{ item, value }">
                         <Checkbox :modelValue="item.presente" @click="setPresenca(item)" binary></Checkbox>
                     </template>
                 </CustomColumn>
-
-
-
             </CustomDatatable>
         </div>
     </div>

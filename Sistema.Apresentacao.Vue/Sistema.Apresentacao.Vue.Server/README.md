@@ -1,5 +1,5 @@
 ﻿# MYSQL
-docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_DATABASE=meudatabase -e MYSQL_USER=myuser -e MYSQL_PASSWORD=mypassword -p 3306:3306 -d mysql:latest
+docker run --name mysql-container2 -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_DATABASE=meudatabase -e MYSQL_USER=myuser -e MYSQL_PASSWORD=mypassword -p 3306:3306 -d mysql:latest
 
 # POSTGRES
 docker pull postgres

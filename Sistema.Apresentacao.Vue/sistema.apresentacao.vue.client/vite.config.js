@@ -12,11 +12,10 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'http://localhost:7247/', // Altere para HTTP
+                target: 'http://app:5001/', // Altere para o nome do serviço e porta do back-end no Docker
                 secure: false
             }
         },
-        port: 5173,
-        // Removendo a configuração HTTPS para utilizar HTTP apenas
+        port: 5173
     }
 });

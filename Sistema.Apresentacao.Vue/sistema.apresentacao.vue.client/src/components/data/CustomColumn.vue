@@ -16,7 +16,11 @@ defineProps({
   columnStyle: {
     type: Object,
     default: () => ({})
-  }
+  },
+  expanded: {
+    type: Boolean,
+    required: true
+  },
 })
 </script>
 

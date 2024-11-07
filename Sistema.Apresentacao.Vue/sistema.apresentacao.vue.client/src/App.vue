@@ -32,6 +32,8 @@
         </footer>
     </div>
     <Toast />
+    <ConfirmDialog></ConfirmDialog>
+
 </template>
 
 <script>
@@ -39,6 +41,8 @@
     import { useRouter } from 'vue-router';
     import Toast from 'primevue/toast';
     import PanelMenu from 'primevue/panelmenu'
+    import ConfirmDialog from 'primevue/confirmdialog';
+
 
     export default {
         name: 'App',

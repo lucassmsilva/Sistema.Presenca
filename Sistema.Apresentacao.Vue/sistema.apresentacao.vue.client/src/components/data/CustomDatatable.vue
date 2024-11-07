@@ -63,13 +63,6 @@ const paginatedGroupedData = computed(() => {
 });
 
 
-const subgroupData = (lista, keys) => {
-  for (let i = 0; i<lista.length; i++){
-
-  }
-}
-
-
 const handleNextPage = () => {
   if (currentPage.value < totalPages.value) {
     currentPage.value++;
@@ -125,16 +118,10 @@ const handleColumnClick = (item, column) => {
           </tr>
 
           <tr v-if="expandedGroups[groupKey]" v-for="item in groupItems" :key="item.id" @click="handleRowClick(item)">
-            <td v-for="column in columns" :key="column.accessorKey" 
-                @click="handleColumnClick(item, column)"
-                :style="column.columnStyle">
+            <td v-for="column in columns" :key="column.accessorKey" @click="handleColumnClick(item, column)"
+              :style="column.columnStyle">
               <!-- Renderizar o slot de body específico da coluna se existir -->
-              <component 
-                v-if="column.bodySlot"
-                :is="column.bodySlot"
-                :item="item"
-                :value="item[column.accessorKey]"
-              />
+              <component v-if="column.bodySlot" :is="column.bodySlot" :item="item" :value="item[column.accessorKey]" />
               <!-- Fallback para o valor padrão se não houver slot -->
               <template v-else>
                 {{ item[column.accessorKey] }}
@@ -148,6 +135,12 @@ const handleColumnClick = (item, column) => {
             </slot>
           </tr>
         </template>
+
+        <tr v-if="slots['row-expansion'] && groupItems.length > 0">
+          <slot name="row-expansion" :group-key="groupKey" :items="groupItems"></slot>
+        </tr>
+
+
       </tbody>
 
       <slot name="footer"></slot>
@@ -181,23 +174,24 @@ const handleColumnClick = (item, column) => {
 
 :deep .table th,
 :deep .table td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: left;
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
 }
 
 :deep .table th {
-    background-color: #f5f5f5;
-    font-weight: bold;
+  background-color: #f5f5f5;
+  font-weight: bold;
 }
 
 :deep .table tr:nth-child(even) {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
 
 :deep .table tr:hover {
-    background-color: #f5f5f5;
+  background-color: #f5f5f5;
 }
+
 .group-row {
   background-color: #e5e5e5;
   cursor: pointer;

@@ -11,6 +11,5 @@ namespace Sistema.Core.Dominio.Repositories
     public interface ITurmaRepository : IBaseRepository<TurmaModel>
     {
          Task<bool> TurmaExistsAsync(string turma);
-
     }
 }
