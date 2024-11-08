@@ -1,5 +1,9 @@
 <template>
     <div class="layout-wrapper">
+        <ConfirmDialog></ConfirmDialog>
+        <Toast />
+
+
         <!-- Topbar -->
         <header class="layout-topbar">
             <div class="layout-topbar-left">
@@ -31,8 +35,6 @@
             <span> 2024 Sistema Presença. Todos os direitos reservados.</span>
         </footer>
     </div>
-    <Toast />
-    <ConfirmDialog></ConfirmDialog>
 
 </template>
 
@@ -48,7 +50,8 @@
         name: 'App',
         components: {
             Toast,
-            PanelMenu
+            PanelMenu,
+            ConfirmDialog
 
         },
         setup() {

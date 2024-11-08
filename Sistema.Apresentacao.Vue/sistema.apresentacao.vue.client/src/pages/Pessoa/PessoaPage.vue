@@ -90,8 +90,14 @@ const submitForm = async () => {
 
 
     if (response.isSuccess) {
-        toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Pessoa cadastrada com sucesso', life: 3000 });
         pessoa.value = { nome: '', cpf: '', dataNascimento: null };
+        
+        if (pessoa.value.id){
+            pessoas.value = pessoas.value.filter(item => item.id !== pessoa.value.id);
+            toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Pessoa alterada com sucesso', life: 3000 });
+        } else {
+            toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Pessoa cadastrada com sucesso', life: 3000 });
+        }
 
         pessoas.value.unshift(response.data);
         cadastro.value = false;

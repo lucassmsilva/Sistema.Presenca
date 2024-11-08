@@ -4,6 +4,9 @@ using Sistema.Core.Aplicacao.UseCases.Turma;
 using Sistema.Core.Dominio.Interfaces;
 using Sistema.Core.Dominio.DTO.Turma;
 using Sistema.Core.Dominio.Repositories;
+using Sistema.Core.Aplicacao.UseCases.TurmaAluno;
+using Sistema.Infraestrutura.Persistencia.Repositories;
+using Sistema.Core.Dominio.DTO.Pessoa;
 
 namespace Sistema.Apresentacao.Vue.Server.Controllers
 {
@@ -12,17 +15,21 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
     public class TurmaController : Controller
     {
         private readonly ITurmaRepository _turmaRepository;
+        private readonly IPessoaRepository _pessoaRepository;
         private readonly IUnityOfWork _unityOfWork;
         private readonly IValidator<CriarTurmaCommand> _createValidator;
         private readonly IValidator<AtualizarTurmaCommand> _updateValidator;
+        private readonly IValidator<CriarTurmaAlunoCommand> _adicionarAlunoValidator;
 
-        public TurmaController(ITurmaRepository turmaRepository, IUnityOfWork unityOfWork, IValidator<CriarTurmaCommand> createValidator,
-            IValidator<AtualizarTurmaCommand> updateValidator)
+        public TurmaController(ITurmaRepository turmaRepository, IPessoaRepository pessoaRepository, IUnityOfWork unityOfWork, IValidator<CriarTurmaCommand> createValidator,
+            IValidator<AtualizarTurmaCommand> updateValidator, IValidator<CriarTurmaAlunoCommand> adicionarAlunoValidator)
         {
             _turmaRepository = turmaRepository;
+            _pessoaRepository = pessoaRepository;
             _unityOfWork = unityOfWork;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _adicionarAlunoValidator = adicionarAlunoValidator;
         }
 
 
@@ -42,7 +49,10 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             _turmaRepository.Create(turma);
             await _unityOfWork.Commit(cancellationToken);
 
-            return Ok(turma);
+            var dtos = await _turmaRepository.Selecionar(t => t.Id == turma.Id, cancellationToken);
+            var dto = dtos.Single();
+
+            return Ok(dto);
         }
 
 
@@ -57,7 +67,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             return Ok(results);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] AtualizarTurmaCommand command, CancellationToken cancellationToken)
         {
             if (id != command.Id)
@@ -79,7 +89,10 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             _turmaRepository.Update(turma);
             await _unityOfWork.Commit(cancellationToken);
 
-            return Ok(TurmaDTO.FromEntity(turma));
+            var dtos = await _turmaRepository.Selecionar(t => t.Id == turma.Id, cancellationToken);
+            var dto = dtos.Single();
+
+            return Ok(dto);
         }
 
         [HttpDelete("delete/{id}")]
@@ -96,5 +109,40 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             await _unityOfWork.Commit(cancellationToken);
             return Ok("Deleted");
         }
+
+        [HttpPost("adicionar-aluno")]
+        public async Task<IActionResult> AdicionarAluno([FromBody] CriarTurmaAlunoCommand command, CancellationToken cancellationToken)
+        {
+            // Validação do comando
+            var validationResult = await _adicionarAlunoValidator.ValidateAsync(command, cancellationToken);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
+            // Busca a turma e a pessoa para garantir que ambos existem
+            var turma = await _turmaRepository.Get(command.IdTurma, cancellationToken);
+
+            if (turma == null) return NotFound("Turma não encontrada.");
+
+            foreach (int idPessoa in command.Pessoas)
+            {
+                var pessoa = await _pessoaRepository.Get(idPessoa, cancellationToken);
+                if (pessoa != null)
+                {
+                    turma.Alunos.Add(pessoa);
+                }
+            }
+
+            // Salva as mudanças usando o Unit of Work
+            await _unityOfWork.Commit(cancellationToken);
+
+            var dtos = await _turmaRepository.Selecionar(t => t.Id == turma.Id, cancellationToken);
+            var dto = dtos.Single();
+
+            return Ok(dto);
+        }
+
     }
 }

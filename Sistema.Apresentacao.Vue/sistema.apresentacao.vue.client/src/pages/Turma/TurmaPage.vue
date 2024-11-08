@@ -96,7 +96,12 @@ const submitForm = async () => {
     let response;
 
     if (turma.value.id) {
-        response = await api.put('turma/update/' + turma.value.id, turma.value);
+        response = await api.put('turma/update/' + turma.value.id, {
+            id: turma.value.id,
+            nomeTurma: turma.value.nomeTurma,
+            sigla: turma.value.sigla,
+            idProfessor: turma.value.professor?.id??0,
+        });
     } else {
         response = await api.post('turma/create', {
             nomeTurma: turma.value.nomeTurma,
@@ -107,14 +112,25 @@ const submitForm = async () => {
 
 
     if (response.isSuccess) {
-        toast.add({ severity: 'success', summary: 'Sucesso', detail: 'turma cadastrada com sucesso', life: 3000 });
-        turma.value = { nome: '', cpf: '', dataNascimento: null };
+        if (turma.value.id){
+            turmas.value = turmas.value.filter(item => item.id !== turma.value.id);
+            toast.add({ severity: 'success', summary: 'Sucesso', detail: `Turma ${turma.value.nomeTurma} - ${turma.value.sigla} alterada com sucesso`, life: 3000 });
+        } else {
+            toast.add({ severity: 'success', summary: 'Sucesso', detail: `Turma ${turma.value.nomeTurma} - ${turma.value.sigla} cadastrada com sucesso`, life: 3000 });
+        }
+
+        turma.value = { nomeTurma: '', sigla: '', idProfessor: null };
+
 
         turmas.value.unshift(response.data);
         cadastro.value = false;
-
     } else {
-        toast.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao cadastrar turma' + response.error, life: 3000 });
+        if (response.validationErrors){
+            for (const error of response.validationErrors){
+                toast.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao cadastrar turma' + error, life: 3000 });
+
+            }
+        }
     }
 };
 
@@ -203,7 +219,7 @@ onMounted(() => {
                 </Column>
                 <Column header="Nome" field="nomeTurma"></Column>
                 <Column header="Sigla" field="sigla"></Column>
-                <Column header="Professor" field="professor"></Column>
+                <Column header="Professor" field="professor.nome"></Column>
 
             </DataTable>
         </div>

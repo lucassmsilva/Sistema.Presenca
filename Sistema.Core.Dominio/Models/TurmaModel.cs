@@ -19,7 +19,7 @@ namespace Sistema.Core.Dominio.Models
         public virtual PessoaModel Professor { get; set; }
 
         // Relacionamento com os alunos
-        public virtual ICollection<PessoaModel> Alunos { get; set; }
+        public virtual ICollection<PessoaModel> Alunos { get; set; } = new List<PessoaModel>();
     }
 
 }

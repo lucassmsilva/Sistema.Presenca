@@ -1,4 +1,5 @@
 ﻿using Sistema.Core.Aplicacao.Utils;
+using Sistema.Core.Dominio.DTO.Pessoa;
 using Sistema.Core.Dominio.Models;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,6 @@ namespace Sistema.Core.Aplicacao.UseCases.TurmaAluno
     {
         public int IdTurma { get; set; }
 
-        public int IdPessoa { get; set; }
-
-        public TurmaAlunoModel ToTurmaAluno() => new TurmaAlunoModel
-        {
-           IdTurma = IdTurma,
-           IdPessoa = IdPessoa
-        };
+        public List<int> Pessoas { get; set; }
     }
 }

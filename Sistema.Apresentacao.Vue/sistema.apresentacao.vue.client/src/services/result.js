@@ -1,8 +1,9 @@
 class Result {
-    constructor(data, error, status) {
+    constructor(data, error, status, validationErrors = []) {
         this.data = data;
         this.error = error;
         this.status = status;
+        this.validationErrors = [];
         this.isSuccess = !error && this.isSuccessStatus(status);
     }
 
@@ -20,15 +21,7 @@ class Result {
     static fromAxiosError(error) {
         let errorMessage;
         let status;
-
-        let handleMessages = (data) => {
-            let finalMessage = "Erro na validação: ";
-            for (const message of data){
-                finalMessage += message.errorMessage + " | ";
-            }
-
-            return finalMessage;
-        }
+        let validationErrors = [];
 
         if (error.response) {
             status = error.response.status;
@@ -36,7 +29,13 @@ class Result {
             // Handle specific status codes
             switch (status) {
                 case 400:
-                    errorMessage = error.response.data.length > 0 ? handleMessages(error.response.data) : error.response.data.Message || 'Requisição inválida';
+                     if(error.response.data.length > 0){
+                        errorMessage ='Erro na validação';
+                        validationErrors = error.response.data;
+                    } else {
+                        errorMessage = error.response.data.message || 'Requisição inválida';
+                    }
+
                     break;
                 case 401:
                     errorMessage = 'Não autorizado';
@@ -57,7 +56,7 @@ class Result {
                     errorMessage = 'Serviço indisponível';
                     break;
                 default:
-                    errorMessage = error.response.data?.Message || 
+                    errorMessage = error.response.data?.message || 
                         `Erro ${status}: ${error.response.statusText}`;
             }
         } else if (error.request) {
@@ -68,7 +67,9 @@ class Result {
             errorMessage = error.message || 'Um erro inesperado ocorreu';
         }
 
-        return new Result(null, errorMessage, status);
+
+
+        return new Result(null, errorMessage, status, validationErrors);
     }
     // Helper methods
     static success(data, status = 200) {

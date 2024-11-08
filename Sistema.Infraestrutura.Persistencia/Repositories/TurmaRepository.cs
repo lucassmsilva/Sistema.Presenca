@@ -33,16 +33,9 @@ namespace Sistema.Infraestrutura.Persistencia.Repositories
                 {
                     Id = t.Id,
                     NomeTurma = t.NomeTurma,
-                    Professor = new PessoaDTO
-                    {
-                        Id = t.Professor.Id,
-                        Nome = t.Professor.Nome
-                    },
-                    Alunos = t.Alunos.Select(a => new PessoaDTO
-                    {
-                        Id = a.Id,
-                        Nome = a.Nome
-                    }).ToList()
+                    Sigla = t.Sigla,
+                    Professor = PessoaDTO.FromEntity(t.Professor),
+                    Alunos = t.Alunos.Select(a => PessoaDTO.FromEntity(a)).ToList()
                 })
                 .ToListAsync(cancellationToken);
         }

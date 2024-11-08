@@ -1,13 +1,14 @@
 <!-- CustomDatatable.vue -->
 <script setup>
 import { computed, ref, useSlots } from 'vue'
+import {_get } from '@/helpers/objectHelpers.js';
 
 const props = defineProps({
   itemsPerPage: { type: Number, default: 10 },
   groupByKey: { type: String, default: null },
   values: {
     type: Array,
-    default: []
+    default: () => []
   },
 });
 
@@ -38,7 +39,7 @@ const groupedData = computed(() => {
   if (!props.groupByKey) return { '': data.value };
 
   return data.value.reduce((groups, item) => {
-    const groupKey = item[props.groupByKey];
+    const groupKey = _get(item[props.groupByKey]);
     if (!groups[groupKey]) groups[groupKey] = [];
     groups[groupKey].push(item);
     return groups;
@@ -57,7 +58,7 @@ const paginatedGroupedData = computed(() => {
   const visibleGroupKeys = groupedKeys.value.slice(start, end);
 
   return visibleGroupKeys.reduce((result, groupKey) => {
-    result[groupKey] = groupedData.value[groupKey];
+    result[groupKey] = _get(groupedData.value[groupKey]);
     return result;
   }, {});
 });
@@ -102,7 +103,7 @@ const handleColumnClick = (item, column) => {
         </tr>
       </thead>
       <tbody>
-        <template v-for="(groupItems, groupKey) in paginatedGroupedData">
+        <template v-for="(groupItems, groupKey) in paginatedGroupedData" :key="groupKey">
           <tr class="group-row" @click="toggleGroup(groupKey)">
             <slot name="group-header" :isExpanded="expandedGroups[groupKey]" :group-key="groupKey" :items="groupItems">
               <td :colspan="columns.length">
@@ -117,17 +118,21 @@ const handleColumnClick = (item, column) => {
             </slot>
           </tr>
 
-          <tr v-if="expandedGroups[groupKey]" v-for="item in groupItems" :key="item.id" @click="handleRowClick(item)">
-            <td v-for="column in columns" :key="column.accessorKey" @click="handleColumnClick(item, column)"
-              :style="column.columnStyle">
-              <!-- Renderizar o slot de body específico da coluna se existir -->
-              <component v-if="column.bodySlot" :is="column.bodySlot" :item="item" :value="item[column.accessorKey]" />
-              <!-- Fallback para o valor padrão se não houver slot -->
-              <template v-else>
-                {{ item[column.accessorKey] }}
-              </template>
-            </td>
-          </tr>
+          <template v-if="expandedGroups[groupKey]">
+
+            <tr v-for="item in groupItems" :key="item.id" @click="handleRowClick(item)">
+              <td v-for="column in columns" :key="column.accessorKey" @click="handleColumnClick(item, column)"
+                :style="column.columnStyle">
+                <!-- Renderizar o slot de body específico da coluna se existir -->
+                <component v-if="column.bodySlot" :is="column.bodySlot" :item="item"
+                  :value="_get(item[column.accessorKey])" />
+                <!-- Fallback para o valor padrão se não houver slot -->
+                <template v-else>
+                  {{ _get(item[column.accessorKey]) }}
+                </template>
+              </td>
+            </tr>
+          </template>
 
           <tr v-if="slots['group-footer'] && expandedGroups[groupKey]" class="group-row">
             <slot name="group-footer" :group-key="groupKey" :items="groupItems">
