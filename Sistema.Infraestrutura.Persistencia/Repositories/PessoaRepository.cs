@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using Sistema.Core.Dominio.Models;
 using Sistema.Core.Dominio.Repositories;
 using Sistema.Infraestrutura.Persistencia.Context;

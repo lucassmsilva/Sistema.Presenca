@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Sistema.Core.Aplicacao.UseCases.Pessoa;
 using Sistema.Core.Dominio.DTO.Pessoa;
 using Sistema.Core.Dominio.Interfaces;
-using Sistema.Core.Dominio.Models;
 using Sistema.Core.Dominio.Repositories;
 
 namespace Sistema.Apresentacao.Vue.Server.Controllers
@@ -82,7 +83,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
                 return BadRequest(validationResult.Errors);
             }
 
-            pessoa = command.MapToPessoa(pessoa);   
+            pessoa = command.MapToPessoa(pessoa);
 
             _pessoaRepository.Update(pessoa);
             await _unityOfWork.Commit(cancellationToken);
@@ -99,7 +100,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
                 return NotFound("Pessoa não encontrada");
             }
 
-             _pessoaRepository.Delete(pessoa);
+            _pessoaRepository.Delete(pessoa);
 
             await _unityOfWork.Commit(cancellationToken);
             return Ok("Deleted");

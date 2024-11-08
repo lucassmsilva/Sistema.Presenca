@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sistema.Core.Aplicacao.UseCases.Pessoa;
+
 using Sistema.Core.Dominio.DTO.Pessoa;
 using Sistema.Core.Dominio.DTO.Turma;
 using Sistema.Core.Dominio.Models;
 using Sistema.Core.Dominio.Repositories;
 using Sistema.Infraestrutura.Persistencia.Context;
+
 using System.Linq.Expressions;
 
 
@@ -38,6 +39,11 @@ namespace Sistema.Infraestrutura.Persistencia.Repositories
                     Alunos = t.Alunos.Select(a => PessoaDTO.FromEntity(a)).ToList()
                 })
                 .ToListAsync(cancellationToken);
+        }
+
+        public async Task<TurmaModel> ConsultarComAlunos(int id, CancellationToken cancellationToken)
+        {
+            return await Context.Set<TurmaModel>().Include(t => t.Alunos).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
     }
 }

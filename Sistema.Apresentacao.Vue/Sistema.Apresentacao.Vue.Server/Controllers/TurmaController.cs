@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Sistema.Core.Aplicacao.UseCases.Turma;
-using Sistema.Core.Dominio.Interfaces;
-using Sistema.Core.Dominio.DTO.Turma;
-using Sistema.Core.Dominio.Repositories;
 using Sistema.Core.Aplicacao.UseCases.TurmaAluno;
-using Sistema.Infraestrutura.Persistencia.Repositories;
-using Sistema.Core.Dominio.DTO.Pessoa;
+using Sistema.Core.Dominio.DTO.Turma;
+using Sistema.Core.Dominio.Interfaces;
+using Sistema.Core.Dominio.Repositories;
 
 namespace Sistema.Apresentacao.Vue.Server.Controllers
 {
@@ -202,7 +202,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             }
 
             // Busca a turma para garantir que ela existe
-            var turma = await _turmaRepository.Get(command.IdTurma, cancellationToken);
+            var turma = await _turmaRepository.ConsultarComAlunos(command.IdTurma, cancellationToken);
             if (turma == null)
                 return Ok(new List<TurmaDTO>());
 
@@ -233,7 +233,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             // Busca as turmas onde o aluno está presente
             var turmasComAluno = await _turmaRepository
                 .Selecionar(t => t.Alunos.Any(a => a.Id == alunoId), cancellationToken);
-                
+
 
 
             if (!turmasComAluno.Any())

@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
 using Sistema.Core.Dominio.Interfaces;
 using Sistema.Core.Dominio.Repositories;
 using Sistema.Infraestrutura.Persistencia.Context;
 using Sistema.Infraestrutura.Persistencia.Repositories;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
 
 namespace Sistema.Infraestrutura.Persistencia
 {

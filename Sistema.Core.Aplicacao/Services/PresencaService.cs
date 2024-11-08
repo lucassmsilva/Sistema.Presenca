@@ -7,7 +7,7 @@ namespace Sistema.Core.Aplicacao.Services
     public class PresencaService : IPresencaService
     {
         private readonly IPresencaRepository _presencaRepository;
-        
+
         public PresencaService(IPresencaRepository presencaRepository, IUnityOfWork unityOfWork)
         {
             _presencaRepository = presencaRepository;

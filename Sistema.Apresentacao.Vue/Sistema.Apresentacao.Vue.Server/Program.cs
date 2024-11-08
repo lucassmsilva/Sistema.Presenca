@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Sistema.Core.Aplicacao;
 using Sistema.Infraestrutura.Persistencia;
 using Sistema.Infraestrutura.Persistencia.Context;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,8 +1,9 @@
 ﻿using FluentValidation;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Sistema.Core.Aplicacao.UseCases.Presenca;
 using Sistema.Core.Dominio.Interfaces;
-using Sistema.Core.Dominio.Models;
 using Sistema.Core.Dominio.Repositories;
 
 namespace Sistema.Apresentacao.Vue.Server.Controllers
