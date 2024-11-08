@@ -33,7 +33,7 @@ class Result {
                         errorMessage ='Erro na validação';
                         validationErrors = error.response.data;
                     } else {
-                        errorMessage = error.response.data.message || 'Requisição inválida';
+                        errorMessage = error.response?.data	 || 'Requisição inválida';
                     }
 
                     break;
@@ -47,7 +47,7 @@ class Result {
                     errorMessage = 'Recurso não encontrado';
                     break;
                 case 422:
-                    errorMessage = error.response.data?.Message || 'Dados inválidos';
+                    errorMessage = error.response.data?.errorMessage || 'Dados inválidos';
                     break;
                 case 500:
                     errorMessage = 'Erro interno do servidor';

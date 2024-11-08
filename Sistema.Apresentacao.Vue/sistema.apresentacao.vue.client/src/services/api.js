@@ -72,6 +72,6 @@ export class Api {
 }
 
 // Create and export default instance
-const api = new Api('https://localhost:7247/api/');
-//const api = new Api('https://localhost:44389/api/');
+//const api = new Api('https://localhost:7247/api/');
+const api = new Api('https://localhost:44389/api/');
 export default api;

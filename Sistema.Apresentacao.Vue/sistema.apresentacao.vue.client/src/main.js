@@ -27,6 +27,8 @@ import CustomDatatable from './components/data/CustomDatatable.vue';
 import CustomColumn from './components/data/CustomColumn.vue';
 import ConfirmationService from 'primevue/confirmationservice';
 
+import ProgressSpinner from 'primevue/progressspinner';
+
 const app = createApp(App);
 
 
@@ -62,6 +64,7 @@ app.component('PToast', Toast);
 app.component('PCard', Card);
 app.component('CustomDatatable', CustomDatatable);
 app.component('CustomColumn', CustomColumn);
+app.component('ProgressSpinner', ProgressSpinner);
 
 
 app.mount('#app');

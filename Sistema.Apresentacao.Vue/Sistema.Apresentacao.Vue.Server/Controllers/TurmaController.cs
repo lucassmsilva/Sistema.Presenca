@@ -84,7 +84,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
                 return BadRequest(validationResult.Errors);
             }
 
-            turma = command.MapToTurma(turma);   
+            turma = command.MapToTurma(turma);
 
             _turmaRepository.Update(turma);
             await _unityOfWork.Commit(cancellationToken);
@@ -104,7 +104,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
                 return NotFound("Turma não encontrada");
             }
 
-             _turmaRepository.Delete(turma);
+            _turmaRepository.Delete(turma);
 
             await _unityOfWork.Commit(cancellationToken);
             return Ok("Deleted");
@@ -143,6 +143,113 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
 
             return Ok(dto);
         }
+
+        [HttpPost("sincronizar-alunos")]
+        public async Task<IActionResult> SincronizarAlunos([FromBody] CriarTurmaAlunoCommand command, CancellationToken cancellationToken)
+        {
+            // Validação do comando
+            var validationResult = await _adicionarAlunoValidator.ValidateAsync(command, cancellationToken);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
+            // Busca a turma para garantir que existe
+            var turma = await _turmaRepository.Get(command.IdTurma, cancellationToken);
+            if (turma == null)
+                return NotFound("Turma não encontrada.");
+
+            // Buscar todas as pessoas que estão no comando
+            var pessoasExistentes = await _pessoaRepository.Search(p => command.Pessoas.Contains(p.Id), cancellationToken);
+
+            // Filtrar IDs de pessoas válidas (existentes no sistema)
+            var pessoasIds = pessoasExistentes.Select(p => p.Id).ToList();
+
+            // Adicionar alunos que estão na lista, mas não estão na turma
+            var alunosParaAdicionar = pessoasExistentes.Where(p => !turma.Alunos.Any(a => a.Id == p.Id)).ToList();
+            foreach (var aluno in alunosParaAdicionar)
+            {
+                turma.Alunos.Add(aluno);
+            }
+
+            // Remover alunos que estão na turma, mas não estão na lista
+            var alunosParaRemover = turma.Alunos.Where(a => !pessoasIds.Contains(a.Id)).ToList();
+            foreach (var aluno in alunosParaRemover)
+            {
+                turma.Alunos.Remove(aluno);
+            }
+
+            // Salva as mudanças usando o Unit of Work
+            await _unityOfWork.Commit(cancellationToken);
+
+            // Retorna os dados da turma atualizada
+            var dtos = await _turmaRepository.Selecionar(t => t.Id == turma.Id, cancellationToken);
+            var dto = dtos.Single();
+
+            return Ok(dto);
+        }
+
+        [HttpPost("remover-aluno")]
+        public async Task<IActionResult> RemoverAluno([FromBody] CriarTurmaAlunoCommand command, CancellationToken cancellationToken)
+        {
+            // Validação do comando
+            var validationResult = await _adicionarAlunoValidator.ValidateAsync(command, cancellationToken);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
+            // Busca a turma para garantir que ela existe
+            var turma = await _turmaRepository.Get(command.IdTurma, cancellationToken);
+            if (turma == null)
+                return Ok(new List<TurmaDTO>());
+
+            // Remover alunos que estão na lista de IDs enviados
+            foreach (int idPessoa in command.Pessoas)
+            {
+                var alunoParaRemover = turma.Alunos.FirstOrDefault(a => a.Id == idPessoa);
+                if (alunoParaRemover != null)
+                {
+                    turma.Alunos.Remove(alunoParaRemover);
+                }
+            }
+
+            // Salva as mudanças usando o Unit of Work
+            await _unityOfWork.Commit(cancellationToken);
+
+            // Retorna os dados atualizados da turma
+            var dtos = await _turmaRepository.Selecionar(t => t.Id == turma.Id, cancellationToken);
+            var dto = dtos.Single();
+
+            return Ok(dto);
+        }
+
+        [HttpGet("buscar-turmas-aluno/{alunoId}")]
+
+        public async Task<IActionResult> ObterTurmasPorAluno(int alunoId, CancellationToken cancellationToken)
+        {
+            // Busca as turmas onde o aluno está presente
+            var turmasComAluno = await _turmaRepository
+                .Selecionar(t => t.Alunos.Any(a => a.Id == alunoId), cancellationToken);
+                
+
+
+            if (!turmasComAluno.Any())
+                return NotFound("Nenhuma turma encontrada para este aluno.");
+
+            var listaSemDadosAlunos = turmasComAluno.Select(t => new
+            {
+                t.Id,
+                t.NomeTurma,
+                t.IdProfessor,
+                t.Professor
+            }).ToList();
+
+            return Ok(listaSemDadosAlunos);
+        }
+
 
     }
 }

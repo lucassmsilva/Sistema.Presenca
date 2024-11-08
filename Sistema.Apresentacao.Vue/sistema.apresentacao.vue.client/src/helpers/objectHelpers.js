@@ -2,6 +2,7 @@
 
 function _get(obj, path) {
     if (obj == null) return undefined;
+    if (path == null) return undefined;
     
     const parts = path.split('.');
     let result = obj;

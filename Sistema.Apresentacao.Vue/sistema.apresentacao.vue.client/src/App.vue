@@ -8,7 +8,7 @@
         <header class="layout-topbar">
             <div class="layout-topbar-left">
                 <p-button icon="pi pi-bars" @click="toggleMenu" class="p-button-text menu-button" />
-                <h1>Sistema Presença</h1>
+                <img height="120px" src="./assets/logo-presenca-nobackground.svg" alt="Presença" @click="goHome" style="cursor: pointer;" />
             </div>
             <div class="layout-topbar-right">
                 <p-button icon="pi pi-user" class="p-button-rounded p-button-text" />
@@ -95,10 +95,13 @@
                 }
             ];
 
+            const goHome = () => router.push('/')
+
             return {
                 menuActive,
                 toggleMenu,
-                menu
+                menu,
+                goHome
             };
         }
     };

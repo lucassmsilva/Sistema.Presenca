@@ -6,6 +6,8 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import Toolbar from 'primevue/toolbar';
 import { useConfirm } from "primevue/useconfirm";
+import PessoaVinculoTurmaModal from './PessoaVinculoTurmaModal.vue';
+import PessoaVinculoRemoverTurmaModal from './PessoaVinculoRemoverTurmaModal.vue';
 
 const menu = ref();
 const menuModel = ref([]);
@@ -19,6 +21,9 @@ const query = ref({});
 const toast = useToast();
 
 const cadastro = ref(false);
+const modalVinculo = ref(false);
+const modalVinculorRemover = ref(false);
+
 const pessoa = ref({
     nome: '',
     cpf: '',
@@ -45,6 +50,16 @@ const consultar = async () => {
 const alterar = (model) => {
     pessoa.value = toRaw(model);
     cadastro.value = true;
+}
+
+const vincular = (model) => {
+    pessoa.value = toRaw(model);
+    modalVinculo.value = true;
+}
+
+const desvincular = (model) => {
+    pessoa.value = toRaw(model);
+    modalVinculorRemover.value = true;
 }
 
 const deletar = (model) => {
@@ -116,6 +131,16 @@ const toggleMenu = (model, event) => {
             icon: "pi pi-pencil",
             command: () => alterar(model),
             rf: "RF003",
+        },
+        {
+            label: "Vincular",
+            icon: "pi pi-fw pi-book",
+            command: () => vincular(model),
+        },
+        {
+            label: "Remover Vinculo",
+            icon: "pi pi-fw pi-undo",
+            command: () => desvincular(model),
         },
         {
             label: "Remover",
@@ -218,4 +243,7 @@ const toggleMenu = (model, event) => {
             </form>
         </div>
     </div>
+
+    <PessoaVinculoTurmaModal :pessoa="pessoa" v-model:visible="modalVinculo"></PessoaVinculoTurmaModal>
+    <PessoaVinculoRemoverTurmaModal :pessoa="pessoa" v-model:visible="modalVinculorRemover"></PessoaVinculoRemoverTurmaModal>
 </template>

@@ -116,7 +116,6 @@ const computedPresenca = computed(() => presenca.value);
 
 const setPresenca = (item) => {
     let index = presenca.value.indexOf(item);
-    console.log(index);
     presenca.value[index].presente = !presenca.value[index].presente;
 }
 

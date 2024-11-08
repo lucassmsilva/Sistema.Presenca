@@ -207,7 +207,7 @@ onMounted(() => {
 
 
         <div class="w-full flex flex-column gap-2" v-if="!cadastro">
-            <h2 class="mt-2">turmas</h2>
+            <h2 class="mt-2">Turmas</h2>
 
             <DataTable :value="cturmas">
                 <Column :exportable="false" style="width: 3rem">
@@ -226,7 +226,7 @@ onMounted(() => {
 
 
         <div class="w-full flex flex-column gap-2 mt-4" v-if="cadastro">
-            <h2>Cadastro de turma</h2>
+            <h2>Cadastro de Turmas</h2>
             <form @submit.prevent="submitForm">
                 <div class="p-fluid">
                     <div class="flex col-3 gap-2 flex-column">
