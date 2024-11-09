@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sistema.Core.Dominio.Interfaces
+namespace Sistema.Core.Dominio.Models
 {
     public class BaseEntity
     {

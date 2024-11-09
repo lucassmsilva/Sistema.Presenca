@@ -1,6 +1,4 @@
-﻿using Sistema.Core.Dominio.Interfaces;
-
-namespace Sistema.Core.Dominio.Models
+﻿namespace Sistema.Core.Dominio.Models
 {
     public class PresencaModel : BaseEntity
     {

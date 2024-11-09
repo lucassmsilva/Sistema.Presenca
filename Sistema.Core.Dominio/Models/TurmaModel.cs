@@ -1,6 +1,4 @@
-﻿using Sistema.Core.Dominio.Interfaces;
-
-namespace Sistema.Core.Dominio.Models
+﻿namespace Sistema.Core.Dominio.Models
 {
     public class TurmaModel : BaseEntity
     {
@@ -15,6 +13,8 @@ namespace Sistema.Core.Dominio.Models
 
         // Relacionamento com os alunos
         public virtual ICollection<PessoaModel> Alunos { get; set; } = new List<PessoaModel>();
+
+        public virtual ICollection<TurmaHorarioModel> Horarios { get; set; } = new List<TurmaHorarioModel>();
     }
 
 }

@@ -2,6 +2,7 @@
 
 using Sistema.Core.Dominio.DTO.Pessoa;
 using Sistema.Core.Dominio.DTO.Turma;
+using Sistema.Core.Dominio.DTO.TurmaHorario;
 using Sistema.Core.Dominio.Models;
 using Sistema.Core.Dominio.Repositories;
 using Sistema.Infraestrutura.Persistencia.Context;
@@ -23,12 +24,14 @@ namespace Sistema.Infraestrutura.Persistencia.Repositories
                 .AnyAsync(p => p.Sigla == turma);
         }
         public async Task<List<TurmaDTO>> Selecionar(
-    Expression<Func<TurmaModel, bool>> filter,
-    CancellationToken cancellationToken)
+            Expression<Func<TurmaModel, bool>> filter,
+            CancellationToken cancellationToken
+            )
         {
             return await Context.Set<TurmaModel>()
                 .Include(t => t.Professor)    // Inclui o professor
                 .Include(t => t.Alunos)       // Inclui os alunos
+                .Include(t => t.Horarios)     // Inclui os horários
                 .Where(filter)
                 .Select(t => new TurmaDTO
                 {
@@ -36,7 +39,8 @@ namespace Sistema.Infraestrutura.Persistencia.Repositories
                     NomeTurma = t.NomeTurma,
                     Sigla = t.Sigla,
                     Professor = PessoaDTO.FromEntity(t.Professor),
-                    Alunos = t.Alunos.Select(a => PessoaDTO.FromEntity(a)).ToList()
+                    Alunos = t.Alunos.Select(a => PessoaDTO.FromEntity(a)).ToList(),
+                    Horarios = t.Horarios.Select(a => TurmaHorarioDTO.FromEntity(a)).ToList()
                 })
                 .ToListAsync(cancellationToken);
         }

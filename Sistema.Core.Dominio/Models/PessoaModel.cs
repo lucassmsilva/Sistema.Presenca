@@ -1,6 +1,4 @@
-﻿using Sistema.Core.Dominio.Interfaces;
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Sistema.Core.Dominio.Models
 {

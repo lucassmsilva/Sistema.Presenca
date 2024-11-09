@@ -25,6 +25,24 @@ namespace Sistema.Infraestrutura.Persistencia.Context
                 .HasMany(t => t.Alunos)
                 .WithMany(p => p.Turmas)
                 .UsingEntity(j => j.ToTable("TurmaAlunos")); // Tabela de junção
+
+            modelBuilder.Entity<TurmaHorarioModel>()
+            .HasOne(th => th.Turma)
+            .WithMany(t => t.Horarios)
+            .HasForeignKey(th => th.IdTurma);
+
+            // Configurações adicionais para TurmaHorario
+            modelBuilder.Entity<TurmaHorarioModel>()
+                .Property(th => th.Data)
+                .IsRequired();
+
+            modelBuilder.Entity<TurmaHorarioModel>()
+                .Property(th => th.HoraInicio)
+                .IsRequired();
+
+            modelBuilder.Entity<TurmaHorarioModel>()
+                .Property(th => th.HoraFim)
+                .IsRequired();
         }
     }
 }

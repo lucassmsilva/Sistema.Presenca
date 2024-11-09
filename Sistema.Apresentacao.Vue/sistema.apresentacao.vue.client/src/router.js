@@ -7,7 +7,7 @@ import Turma from './pages/Turma/TurmaPage.vue'
 import Presenca from './pages/Presenca/PresencaPage.vue'
 
 const routes = [
-    { path: '/', component: Pessoa },
+    { path: '/', component: Home },
     { path: '/pessoa', component: Pessoa },
     { path: '/turma', component: Turma },
     { path: '/presenca', component: Presenca },

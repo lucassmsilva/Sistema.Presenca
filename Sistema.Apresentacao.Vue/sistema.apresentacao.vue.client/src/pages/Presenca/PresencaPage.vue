@@ -48,7 +48,7 @@
                 <CustomColumn header="Turma" accessorKey="turma" :expanded="true"></CustomColumn>
                 <CustomColumn header="Nome" accessorKey="nome"></CustomColumn>
                 <CustomColumn header="Presente" accessorKey="presente">
-                    <template #body="{ item, value }">
+                    <template #body="{ item }">
                         <Checkbox :modelValue="item.presente" @click="setPresenca(item)" binary></Checkbox>
                     </template>
                 </CustomColumn>
@@ -61,13 +61,13 @@
 import { ref, computed } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import api from '../../services/api'
-import Column from 'primevue/column';
-import DataTable from 'primevue/datatable';
-import Toolbar from 'primevue/toolbar';
 import Checkbox from 'primevue/checkbox';
 
+const toast = useToast();
 const menu = ref();
 const menuModel = ref([]);
+
+const query = ref({});
 
 
 const presenca = ref([
@@ -118,39 +118,6 @@ const setPresenca = (item) => {
     let index = presenca.value.indexOf(item);
     presenca.value[index].presente = !presenca.value[index].presente;
 }
-
-
-const query = ref({});
-
-const toast = useToast();
-
-const cadastro = ref(false);
-const pessoa = ref({
-    nome: '',
-    cpf: '',
-});
-
-const alterar = (model) => {
-
-}
-
-const deletar = (model) => {
-
-}
-const submitForm = async () => {
-
-    const response = await api.post('pessoa/create', pessoa.value);
-
-    if (response.isSuccess) {
-        toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Pessoa cadastrada com sucesso', life: 3000 });
-        pessoa.value = { nome: '', cpf: '', dataNascimento: null };
-
-    } else {
-        toast.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao cadastrar pessoa' + response.error, life: 3000 });
-    }
-};
-
-
 
 
 const toggleMenu = (model, event) => {

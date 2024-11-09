@@ -1,4 +1,5 @@
 ﻿using Sistema.Core.Dominio.DTO.Pessoa;
+using Sistema.Core.Dominio.DTO.TurmaHorario;
 using Sistema.Core.Dominio.Models;
 
 namespace Sistema.Core.Dominio.DTO.Turma
@@ -13,6 +14,7 @@ namespace Sistema.Core.Dominio.DTO.Turma
 
         public virtual PessoaDTO Professor { get; set; }
         public virtual List<PessoaDTO> Alunos { get; set; }
+        public virtual List<TurmaHorarioDTO> Horarios { get; set; }
 
 
 
@@ -22,7 +24,7 @@ namespace Sistema.Core.Dominio.DTO.Turma
             {
                 IdProfessor = turma.IdProfessor,
                 NomeTurma = turma.NomeTurma,
-                Sigla = turma.Sigla,
+                Sigla = turma.Sigla
             };
         }
     }

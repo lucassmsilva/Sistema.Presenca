@@ -7,6 +7,7 @@ import DataTable from 'primevue/datatable';
 import Toolbar from 'primevue/toolbar';
 import ConfirmDialog from 'primevue/confirmdialog';
 import { useConfirm } from "primevue/useconfirm";
+import TurmaVinculoHorario from './TurmaVinculoHorario.vue';
 
 const menu = ref();
 const menuModel = ref([]);
@@ -25,8 +26,16 @@ const turma = ref({
     sigla: '',
 });
 
+const showHorarios = ref(false);
+const turmaSelecionada = ref(null);
+
+const abrirGerenciarHorarios = (turma) => {
+    turmaSelecionada.value = turma;
+    showHorarios.value = true;
+}
+
 const items = ref([]);
-const search = async(e) => {
+const search = async (e) => {
 
     let value = e.query;
     const response = await api.get('pessoa/search', { nome: value });
@@ -100,19 +109,19 @@ const submitForm = async () => {
             id: turma.value.id,
             nomeTurma: turma.value.nomeTurma,
             sigla: turma.value.sigla,
-            idProfessor: turma.value.professor?.id??0,
+            idProfessor: turma.value.professor?.id ?? 0,
         });
     } else {
         response = await api.post('turma/create', {
             nomeTurma: turma.value.nomeTurma,
             sigla: turma.value.sigla,
-            idProfessor: turma.value.professor?.id??0,
+            idProfessor: turma.value.professor?.id ?? 0,
         });
     }
 
 
     if (response.isSuccess) {
-        if (turma.value.id){
+        if (turma.value.id) {
             turmas.value = turmas.value.filter(item => item.id !== turma.value.id);
             toast.add({ severity: 'success', summary: 'Sucesso', detail: `Turma ${turma.value.nomeTurma} - ${turma.value.sigla} alterada com sucesso`, life: 3000 });
         } else {
@@ -125,8 +134,8 @@ const submitForm = async () => {
         turmas.value.unshift(response.data);
         cadastro.value = false;
     } else {
-        if (response.validationErrors){
-            for (const error of response.validationErrors){
+        if (response.validationErrors) {
+            for (const error of response.validationErrors) {
                 toast.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao cadastrar turma' + error, life: 3000 });
 
             }
@@ -142,7 +151,11 @@ const toggleMenu = (model, event) => {
             label: "Alterar",
             icon: "pi pi-pencil",
             command: () => alterar(model),
-            rf: "RF003",
+        },
+        {
+            label: "Horarios",
+            icon: "pi pi-clock",
+            command: () => abrirGerenciarHorarios(model),
         },
         {
             label: "Remover",
@@ -241,8 +254,8 @@ onMounted(() => {
                     <div class="flex gap-2 col-3 flex-column">
                         <label for="idprofesssor">Professor</label>
 
-                    <AutoComplete option-label="nome" dropdown :suggestions="items" @complete="search" id="idpessoa" v-model="turma.professor"
-                        required autofocus />
+                        <AutoComplete option-label="nome" dropdown :suggestions="items" @complete="search" id="idpessoa"
+                            v-model="turma.professor" required autofocus />
 
 
                     </div>
@@ -253,4 +266,5 @@ onMounted(() => {
             </form>
         </div>
     </div>
+    <TurmaVinculoHorario v-model:visible="showHorarios" :turma="turmaSelecionada" />
 </template>

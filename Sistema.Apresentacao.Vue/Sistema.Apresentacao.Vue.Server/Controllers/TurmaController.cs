@@ -4,9 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 using Sistema.Core.Aplicacao.UseCases.Turma;
 using Sistema.Core.Aplicacao.UseCases.TurmaAluno;
+using Sistema.Core.Aplicacao.UseCases.TurmaHorario;
 using Sistema.Core.Dominio.DTO.Turma;
 using Sistema.Core.Dominio.Interfaces;
+using Sistema.Core.Dominio.Models;
 using Sistema.Core.Dominio.Repositories;
+
+using System.Globalization;
 
 namespace Sistema.Apresentacao.Vue.Server.Controllers
 {
@@ -20,9 +24,10 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
         private readonly IValidator<CriarTurmaCommand> _createValidator;
         private readonly IValidator<AtualizarTurmaCommand> _updateValidator;
         private readonly IValidator<CriarTurmaAlunoCommand> _adicionarAlunoValidator;
+        private readonly IValidator<SyncTurmaHorarioCommand> _sincronizarHorariosValidator;
 
         public TurmaController(ITurmaRepository turmaRepository, IPessoaRepository pessoaRepository, IUnityOfWork unityOfWork, IValidator<CriarTurmaCommand> createValidator,
-            IValidator<AtualizarTurmaCommand> updateValidator, IValidator<CriarTurmaAlunoCommand> adicionarAlunoValidator)
+            IValidator<AtualizarTurmaCommand> updateValidator, IValidator<CriarTurmaAlunoCommand> adicionarAlunoValidator, IValidator<SyncTurmaHorarioCommand> sincronizarHorariosValidator)
         {
             _turmaRepository = turmaRepository;
             _pessoaRepository = pessoaRepository;
@@ -30,6 +35,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             _createValidator = createValidator;
             _updateValidator = updateValidator;
             _adicionarAlunoValidator = adicionarAlunoValidator;
+            _sincronizarHorariosValidator = sincronizarHorariosValidator;
         }
 
 
@@ -66,6 +72,20 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
 
             return Ok(results);
         }
+
+
+
+        [HttpGet("find/{id}")]
+        public async Task<IActionResult> Find(int id, CancellationToken cancellationToken)
+        {
+            var results = await _turmaRepository
+                .Selecionar(
+                p => p.Id == id,
+                cancellationToken);
+
+            return Ok(results.First());
+        }
+
 
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] AtualizarTurmaCommand command, CancellationToken cancellationToken)
@@ -248,6 +268,55 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             }).ToList();
 
             return Ok(listaSemDadosAlunos);
+        }
+
+        [HttpPost("sincronizar-horarios")]
+        public async Task<IActionResult> SincronizarHorarios(
+            [FromBody] SyncTurmaHorarioCommand command,
+            CancellationToken cancellationToken)
+        {
+            // Validação do comando
+            var validationResult = await _sincronizarHorariosValidator.ValidateAsync(command, cancellationToken);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
+            // Busca a turma
+            var turma = await _turmaRepository.Get(command.IdTurma, cancellationToken);
+            if (turma == null) return NotFound("Turma não encontrada.");
+
+            // Converte strings para TimeSpan
+            var horaInicio = TimeSpan.Parse(command.HoraInicio);
+            var horaFim = TimeSpan.Parse(command.HoraFim);
+
+            // Remove horários existentes
+            turma.Horarios.Clear();
+
+            // Adiciona novos horários
+            foreach (var dataStr in command.Datas)
+            {
+                var data = DateTime.ParseExact(dataStr, "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture);
+
+                var horario = new TurmaHorarioModel
+                {
+                    IdTurma = turma.Id,
+                    Data = data.Date, // Apenas a data, sem o time
+                    HoraInicio = horaInicio,
+                    HoraFim = horaFim
+                };
+
+                turma.Horarios.Add(horario);
+            }
+
+            // Salva as mudanças
+            await _unityOfWork.Commit(cancellationToken);
+
+            // Retorna a turma atualizada
+            var dtos = await _turmaRepository.Selecionar(t => t.Id == turma.Id, cancellationToken);
+            var dto = dtos.Single();
+            return Ok(dto);
         }
 
 

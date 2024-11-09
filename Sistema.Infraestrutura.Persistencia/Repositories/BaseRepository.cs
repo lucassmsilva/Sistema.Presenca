@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Sistema.Core.Dominio.Interfaces;
+using Sistema.Core.Dominio.Models;
 using Sistema.Infraestrutura.Persistencia.Context;
 
 using System.Linq.Expressions;

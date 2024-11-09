@@ -39,7 +39,7 @@ const groupedData = computed(() => {
   if (!props.groupByKey) return { '': data.value };
 
   return data.value.reduce((groups, item) => {
-    const groupKey = _get(item[props.groupByKey]);
+    const groupKey = _get(item,props.groupByKey);
     if (!groups[groupKey]) groups[groupKey] = [];
     groups[groupKey].push(item);
     return groups;
@@ -58,7 +58,7 @@ const paginatedGroupedData = computed(() => {
   const visibleGroupKeys = groupedKeys.value.slice(start, end);
 
   return visibleGroupKeys.reduce((result, groupKey) => {
-    result[groupKey] = _get(groupedData.value[groupKey]);
+    result[groupKey] = _get(groupedData.value,groupKey);
     return result;
   }, {});
 });
@@ -125,10 +125,10 @@ const handleColumnClick = (item, column) => {
                 :style="column.columnStyle">
                 <!-- Renderizar o slot de body específico da coluna se existir -->
                 <component v-if="column.bodySlot" :is="column.bodySlot" :item="item"
-                  :value="_get(item[column.accessorKey])" />
+                  :value="_get(item, column.accessorKey)" />
                 <!-- Fallback para o valor padrão se não houver slot -->
                 <template v-else>
-                  {{ _get(item[column.accessorKey]) }}
+                  {{ _get(item,column.accessorKey) }}
                 </template>
               </td>
             </tr>
