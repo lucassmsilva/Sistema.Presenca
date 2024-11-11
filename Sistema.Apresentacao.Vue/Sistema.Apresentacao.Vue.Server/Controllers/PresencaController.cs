@@ -33,7 +33,7 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
         }
 
         [HttpGet("obter-registros-presenca")]
-        public async Task<IActionResult> ObterRegistrosPresenca(int idTurma, CancellationToken cancellationToken)
+        public async Task<IActionResult> ObterRegistrosPresenca(int idTurma, int idTurmaHorario, CancellationToken cancellationToken)
         {
             if (idTurma == 0)
             {
@@ -41,6 +41,10 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
             }
 
             var registros = await _service.ObterRegistrosPresenca(idTurma);
+            if (idTurmaHorario > 0 && registros.Any())
+            {
+                registros = registros.Where(item => item.IdTurmaHorario == idTurmaHorario).ToList();
+            }
             return Ok(registros);
         }
 
