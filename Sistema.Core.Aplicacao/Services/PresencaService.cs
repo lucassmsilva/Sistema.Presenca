@@ -1,58 +1,55 @@
-﻿using Sistema.Core.Dominio.Interfaces;
-using Sistema.Core.Dominio.Models;
+﻿using FluentValidation;
+
+using Sistema.Core.Aplicacao.UseCases.Presenca;
+using Sistema.Core.Dominio.DTO.Presenca;
+using Sistema.Core.Dominio.Interfaces;
 using Sistema.Core.Dominio.Repositories;
 
 namespace Sistema.Core.Aplicacao.Services
 {
-    public class PresencaService : IPresencaService
+    public class PresencaService<T> : IPresencaService<T> where T : IPresenca
     {
-        private readonly IPresencaRepository _presencaRepository;
+        private readonly IPresencaRepository<T> _presencaRepository;
+        private readonly IValidator<PresencaCommand> validator;
 
-        public PresencaService(IPresencaRepository presencaRepository, IUnityOfWork unityOfWork)
+        public PresencaService(IPresencaRepository<T> presencaRepository)
         {
             _presencaRepository = presencaRepository;
         }
 
-        public bool RegistrarPresenca(PresencaModel presenca)
+        public async Task RegistrarPresenca(IEnumerable<T> lista)
         {
-            _presencaRepository.Create(presenca);
 
-            return true;
 
+
+            foreach (var item in lista)
+            {
+                await _presencaRepository.RegistrarPresenca(item.IdPessoa, item.IdTurmaHorario);
+            }
         }
 
-        public bool CancelarPresenca(PessoaModel pessoa)
+        public async Task RegistrarPresenca(T item)
         {
-            // Implement logic to cancel a person's presence
-            // Use _presencaRepository and _unityOfWork as needed
-            throw new NotImplementedException();
+            await _presencaRepository.RegistrarPresenca(item.IdPessoa, item.IdTurmaHorario);
         }
 
-        public IEnumerable<PresencaModel> ObterRegistrosPresenca(DateTime dataInicial, DateTime dataFinal)
+        public async Task CancelarPresenca(IEnumerable<T> lista)
         {
-            // Implement logic to retrieve presence records within a date range
-            // Use _presencaRepository to fetch the data
-            throw new NotImplementedException();
+            foreach (var item in lista)
+            {
+                await _presencaRepository.CancelarPresenca(item.IdPessoa, item.IdTurmaHorario);
+            }
         }
 
-        bool IPresencaService.RegistrarPresenca<T>(IEnumerable<T> pessoas)
+        public async Task CancelarPresenca(T item)
         {
-            throw new NotImplementedException();
+            await _presencaRepository.CancelarPresenca(item.IdPessoa, item.IdTurmaHorario);
         }
 
-        bool IPresencaService.RegistrarPresenca<T>(T pessoa)
+        // Obter registros de presença por intervalo de datas
+        public async Task<IEnumerable<T>> ObterRegistrosPresenca(int idTurma)
         {
-            throw new NotImplementedException();
-        }
-
-        bool IPresencaService.CancelarPresenca<T>(IEnumerable<T> pessoas)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IPresencaService.CancelarPresenca<T>(T pessoa)
-        {
-            throw new NotImplementedException();
+            return await _presencaRepository.ObterRegistrosPresenca(idTurma);
         }
     }
 }

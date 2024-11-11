@@ -21,9 +21,9 @@ namespace Sistema.Core.Dominio.Models
         }
 
         // Turmas onde é professor
-        public virtual ICollection<TurmaModel> TurmasComoProfessor { get; set; }
+        public virtual ICollection<TurmaModel>? TurmasComoProfessor { get; set; }
 
         // Turmas onde é aluno
-        public virtual ICollection<TurmaModel> Turmas { get; set; }
+        public virtual ICollection<TurmaModel>? Turmas { get; set; }
     }
 }

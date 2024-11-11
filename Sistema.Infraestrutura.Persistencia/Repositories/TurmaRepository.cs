@@ -45,7 +45,7 @@ namespace Sistema.Infraestrutura.Persistencia.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<TurmaModel> ConsultarComAlunos(int id, CancellationToken cancellationToken)
+        public async Task<TurmaModel?> ConsultarComAlunos(int id, CancellationToken cancellationToken)
         {
             return await Context.Set<TurmaModel>().Include(t => t.Alunos).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }

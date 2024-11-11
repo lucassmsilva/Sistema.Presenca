@@ -2,9 +2,12 @@
 
 using Microsoft.AspNetCore.Mvc;
 
+using Sistema.Core.Aplicacao.Services;
 using Sistema.Core.Aplicacao.UseCases.Presenca;
+using Sistema.Core.Dominio.DTO.Presenca;
 using Sistema.Core.Dominio.Interfaces;
 using Sistema.Core.Dominio.Repositories;
+using Sistema.Infraestrutura.Persistencia.Migrations;
 
 namespace Sistema.Apresentacao.Vue.Server.Controllers
 {
@@ -12,97 +15,152 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
     [ApiController]
     public class PresencaController : Controller
     {
-        private readonly IPresencaRepository _presencaRepository;
+        private readonly IPresencaRepository<PresencaDTO> _presencaRepository;
+        private readonly PresencaService<PresencaDTO> _service;
+        private readonly IValidator<PresencaCommand> _validator;
         private readonly IUnityOfWork _unityOfWork;
-        private readonly IValidator<CriarPresencaCommand> _createValidator;
-        private readonly IValidator<AtualizarPresencaCommand> _updateValidator;
 
-        public PresencaController(IPresencaRepository presencaRepository, IUnityOfWork unityOfWork, IValidator<CriarPresencaCommand> createValidator,
-            IValidator<AtualizarPresencaCommand> updateValidator)
+        public PresencaController(
+            IPresencaRepository<PresencaDTO> presencaRepository,
+            IUnityOfWork unityOfWork,
+            PresencaService<PresencaDTO> service,
+            IValidator<PresencaCommand> validator)
         {
             _presencaRepository = presencaRepository;
+            _service = service;
+            _validator = validator;
             _unityOfWork = unityOfWork;
-            _createValidator = createValidator;
-            _updateValidator = updateValidator;
         }
 
+        [HttpGet("obter-registros-presenca")]
+        public async Task<IActionResult> ObterRegistrosPresenca(int idTurma, CancellationToken cancellationToken)
+        {
+            if (idTurma == 0)
+            {
+                return BadRequest("Turma inválida");
+            }
 
-        //[HttpPost("create")]
-        //public async Task<IActionResult> Create([FromBody] CriarPresencaCommand command, CancellationToken cancellationToken)
-        //{
+            var registros = await _service.ObterRegistrosPresenca(idTurma);
+            return Ok(registros);
+        }
 
-        //    var validationResult = await _createValidator.ValidateAsync(command, cancellationToken);
+        [HttpPost("registrar-presenca")]
+        public async Task<IActionResult> RegistrarPresenca([FromBody] PresencaCommand command, CancellationToken cancellationToken)
+        {
+            var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
 
-        //    if (!validationResult.IsValid)
-        //    {
-        //        return BadRequest(validationResult.Errors);
-        //    }
+            try
+            {
+                var presencaDTO = new PresencaDTO
+                {
+                    IdPessoa = command.IdPessoa,
+                    IdTurmaHorario = command.IdTurmaHorario
+                };
 
-        //    var presenca = command.ToPresenca();
+                await _service.RegistrarPresenca(presencaDTO);
+                await _unityOfWork.Commit(cancellationToken);
 
-        //    _presencaRepository.Create(presenca);
-        //    await _unityOfWork.Commit(cancellationToken);
+                return Ok("Presença registrada com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao registrar presença: {ex.Message}");
+            }
+        }
 
-        //    return Ok("Created");
-        //}
+        [HttpPost("registrar-presenca-lista")]
+        public async Task<IActionResult> RegistrarPresencaLista([FromBody] IEnumerable<PresencaCommand> commands, CancellationToken cancellationToken)
+        {
+            // Valida todos os commands da lista
+            foreach (var command in commands)
+            {
+                var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(validationResult.Errors);
+                }
+            }
 
+            try
+            {
+                var presencasDTO = commands.Select(c => new PresencaDTO
+                {
+                    IdPessoa = c.IdPessoa,
+                    IdTurmaHorario = c.IdTurmaHorario
+                });
 
-        //[HttpGet("search")]
-        //public async Task<IActionResult> Search(string? nome, string? cpf, CancellationToken cancellationToken)
-        //{
-        //    var results = await _presencaRepository.Search(
-        //        p => (string.IsNullOrEmpty(nome) || p.Nome.Contains(nome)) &&
-        //             (string.IsNullOrEmpty(cpf) || p.Cpf == cpf),
-        //        cancellationToken);
+                await _service.RegistrarPresenca(presencasDTO);
+                await _unityOfWork.Commit(cancellationToken);
 
-        //    var list = new List<PresencaDTO>();
+                return Ok("Presenças registradas com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao registrar presenças: {ex.Message}");
+            }
+        }
 
-        //    foreach (var result in results)
-        //    {
-        //        list.Add(PresencaDTO.FromEntity(result));
-        //    }
+        [HttpPost("cancelar-presenca")]
+        public async Task<IActionResult> CancelarPresenca([FromBody] PresencaCommand command, CancellationToken cancellationToken)
+        {
+            var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
 
-        //    return Ok(list);
-        //}
+            try
+            {
+                var presencaDTO = new PresencaDTO
+                {
+                    IdPessoa = command.IdPessoa,
+                    IdTurmaHorario = command.IdTurmaHorario
+                };
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Update(int id, [FromBody] AtualizarPresencaCommand command, CancellationToken cancellationToken)
-        //{
-        //    if (id != command.Id)
-        //        return BadRequest("ID inválido");
+                await _service.CancelarPresenca(presencaDTO);
+                await _unityOfWork.Commit(cancellationToken);
 
-        //    var presenca = await _presencaRepository.Get(id, cancellationToken);
-        //    if (presenca == null)
-        //        return NotFound();
+                return Ok("Presença cancelada com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao cancelar presença: {ex.Message}");
+            }
+        }
 
-        //    var validationResult = await _updateValidator.ValidateAsync(command, cancellationToken);
+        [HttpPost("cancelar-presenca-lista")]
+        public async Task<IActionResult> CancelarPresencaLista([FromBody] IEnumerable<PresencaCommand> commands, CancellationToken cancellationToken)
+        {
+            foreach (var command in commands)
+            {
+                var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(validationResult.Errors);
+                }
+            }
 
-        //    if (!validationResult.IsValid)
-        //    {
-        //        return BadRequest(validationResult.Errors);
-        //    }
+            try
+            {
+                var presencasDTO = commands.Select(c => new PresencaDTO
+                {
+                    IdPessoa = c.IdPessoa,
+                    IdTurmaHorario = c.IdTurmaHorario
+                });
 
-        //    presenca = command.MapToPresenca(presenca);   
+                await _service.CancelarPresenca(presencasDTO);
+                await _unityOfWork.Commit(cancellationToken);
 
-        //    _presencaRepository.Update(presenca);
-        //    await _unityOfWork.Commit(cancellationToken);
-
-        //    return Ok(PresencaDTO.FromEntity(presenca));
-        //}
-
-        //[HttpDelete("{id}", Name = "DeletePresenca")]
-        //public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
-        //{
-        //    var presenca = await _presencaRepository.Get(id, cancellationToken);
-        //    if (presenca == null)
-        //    {
-        //        return NotFound("Presenca não encontrada");
-        //    }
-
-        //     _presencaRepository.Delete(presenca);
-
-        //    await _unityOfWork.Commit(cancellationToken);
-        //    return Ok("Deleted");
-        //}
+                return Ok("Presenças canceladas com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao cancelar presenças: {ex.Message}");
+            }
+        }
     }
 }

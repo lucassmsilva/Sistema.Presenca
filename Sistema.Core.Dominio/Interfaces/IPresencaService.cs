@@ -1,4 +1,5 @@
-﻿using Sistema.Core.Dominio.Models;
+﻿using Sistema.Core.Dominio.DTO.Presenca;
+using Sistema.Core.Dominio.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Sistema.Core.Dominio.Interfaces
 {
-    public interface IPresencaService
+    public interface IPresencaService<T> where T : IPresenca
     {
-        bool RegistrarPresenca<T>(IEnumerable<T> pessoas);
-        bool RegistrarPresenca<T>(T pessoa);
-        bool CancelarPresenca<T>(IEnumerable<T> pessoas);
-        bool CancelarPresenca<T>(T pessoa);
-        IEnumerable<PresencaModel> ObterRegistrosPresenca(DateTime dataInicial, DateTime dataFinal);
+        Task RegistrarPresenca(IEnumerable<T> lista);
+        Task RegistrarPresenca(T item);
+        Task CancelarPresenca(IEnumerable<T> lista);
+        Task CancelarPresenca(T item);
+        Task<IEnumerable<T>> ObterRegistrosPresenca(int idTurma);
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Sistema.Core.Dominio.DTO.Presenca;
 using Sistema.Core.Dominio.Interfaces;
 using Sistema.Core.Dominio.Repositories;
 using Sistema.Infraestrutura.Persistencia.Context;
@@ -36,7 +37,7 @@ namespace Sistema.Infraestrutura.Persistencia
             services.AddScoped<IUnityOfWork, UnitOfWork>();
             services.AddScoped<IPessoaRepository, PessoaRepository>();
             services.AddScoped<ITurmaRepository, TurmaRepository>();
-            services.AddScoped<IPresencaRepository, PresencaRepository>();
+            services.AddScoped<IPresencaRepository<PresencaDTO>, PresencaRepository>();
             services.AddScoped<IPessoaEnderecoRepository, PessoaEnderecoRepository>();
         }
     }

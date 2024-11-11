@@ -43,6 +43,16 @@ namespace Sistema.Infraestrutura.Persistencia.Context
             modelBuilder.Entity<TurmaHorarioModel>()
                 .Property(th => th.HoraFim)
                 .IsRequired();
+
+            modelBuilder.Entity<PresencaModel>()
+            .HasOne(p => p.Pessoa)
+            .WithMany()
+            .HasForeignKey(p => p.IdPessoa);
+
+            modelBuilder.Entity<PresencaModel>()
+                .HasOne(p => p.TurmaHorario)
+                .WithMany()
+                .HasForeignKey(p => p.IdTurmaHorario);
         }
     }
 }
