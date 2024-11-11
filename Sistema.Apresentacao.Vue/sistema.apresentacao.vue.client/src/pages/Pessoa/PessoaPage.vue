@@ -153,7 +153,13 @@ const toggleMenu = (model, event) => {
 
     menu.value.toggle(event);
 };
-
+ const voltar = () => {
+    cadastro.value = !cadastro.value;
+    pessoa.value = {
+        nome: '',
+        cpf: '',
+    }
+ }
 
 </script>
 
@@ -185,7 +191,7 @@ const toggleMenu = (model, event) => {
         <Toolbar class="mt-2">
             <template #start>
                 <p-button v-if="!cadastro" label="Cadastrar pessoa" severity="info" icon="pi pi-plus" @click.stop="cadastro = !cadastro;"></p-button>
-                <p-button v-if="cadastro" label="Voltar a lista" severity="info" icon="pi pi-arrow-left" @click.stop="cadastro = !cadastro;"></p-button>
+                <p-button v-if="cadastro" label="Voltar a lista" severity="info" icon="pi pi-arrow-left" @click.stop="voltar"></p-button>
             </template>
         </Toolbar>
 

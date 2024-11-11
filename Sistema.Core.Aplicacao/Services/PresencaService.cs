@@ -10,7 +10,6 @@ namespace Sistema.Core.Aplicacao.Services
     public class PresencaService<T> : IPresencaService<T> where T : IPresenca
     {
         private readonly IPresencaRepository<T> _presencaRepository;
-        private readonly IValidator<PresencaCommand> validator;
 
         public PresencaService(IPresencaRepository<T> presencaRepository)
         {
@@ -19,9 +18,6 @@ namespace Sistema.Core.Aplicacao.Services
 
         public async Task RegistrarPresenca(IEnumerable<T> lista)
         {
-
-
-
             foreach (var item in lista)
             {
                 await _presencaRepository.RegistrarPresenca(item.IdPessoa, item.IdTurmaHorario);

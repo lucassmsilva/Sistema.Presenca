@@ -16,17 +16,6 @@ namespace Sistema.Core.Dominio.DTO.Turma
         public virtual List<PessoaDTO> Alunos { get; set; }
         public virtual List<TurmaHorarioDTO> Horarios { get; set; }
 
-
-
-        public static TurmaDTO FromEntity(TurmaModel turma)
-        {
-            return new()
-            {
-                IdProfessor = turma.IdProfessor,
-                NomeTurma = turma.NomeTurma,
-                Sigla = turma.Sigla
-            };
-        }
     }
 
 

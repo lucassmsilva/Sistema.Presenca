@@ -166,5 +166,51 @@ namespace Sistema.Apresentacao.Vue.Server.Controllers
                 return BadRequest($"Erro ao cancelar presenças: {ex.Message}");
             }
         }
+
+        [HttpGet("relatorio-presenca")]
+        public async Task<IActionResult> GerarRelatorioPresenca(int idTurma, int idTurmaHorario, CancellationToken cancellationToken)
+        {
+            try
+            {
+                if (idTurma == 0)
+                {
+                    return BadRequest("Turma inválida");
+                }
+
+                // Obtém os registros de presença
+                var registros = await _service.ObterRegistrosPresenca(idTurma);
+
+                if (registros == null || !registros.Any())
+                {
+                    return NotFound("Nenhum registro de presença encontrado para esta turma.");
+                }
+
+                // Filtra por TurmaHorario se especificado
+                if (idTurmaHorario > 0)
+                {
+                    registros = registros.Where(item => item.IdTurmaHorario == idTurmaHorario).ToList();
+
+                    if (!registros.Any())
+                    {
+                        return NotFound("Nenhum registro de presença encontrado para este horário.");
+                    }
+
+                    // Gera relatório detalhado por horário (Relatório 1)
+                    var relatorioHorario = RelatorioPresencaService.GerarRelatorioPresenca(registros);
+                    return Content(relatorioHorario, "text/html");
+                }
+                else
+                {
+                    // Gera relatório matriz com todas as datas (Relatório 2)
+                    var relatorioMatriz = RelatorioPresencaService.GerarRelatorioMatrizPresenca(registros);
+                    return Content(relatorioMatriz, "text/html");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log do erro aqui se necessário
+                return StatusCode(500, "Ocorreu um erro ao gerar o relatório de presenças.");
+            }
+        }
     }
 }

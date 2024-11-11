@@ -8,19 +8,27 @@ const toast = useToast();
 const menu = ref();
 const menuModel = ref([]);
 
-const query = ref({});
+const query = ref({
+    idTurma: null,
+    idTurmaHorario: null,
+});
 
 const turmas = ref([]);
 const horarios = computed(() => {
 
+    let opts = [{
+        id: 0,
+        data: "Selecionar todos"
+    }]
+
     if (query.value.idTurma) {
-        return (turmas.value.find(t => t.id === query.value.idTurma)?.horarios ?? []).map(item => {
+        opts = [...opts, ...(turmas.value.find(t => t.id === query.value.idTurma)?.horarios ?? []).map(item => {
             item.data = item.data.slice(0, 10)
             return item;
-        });
+        })];
     }
 
-    return [];
+    return opts;
 
 })
 const presenca = ref([]);
@@ -52,33 +60,33 @@ const setPresenca = async (item) => {
     }
 
     if (response.isSuccess) {
-        toast.add({ severity: 'success', summary: 'Erro', detail: msg, life: 3000 });
+        toast.add({ severity: 'success', summary: 'Sucesso', detail: msg, life: 3000 });
     } else {
         toast.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao alterar presença para ' + item.nome + ' ' + + response.error, life: 3000 });
     }
 }
 
 
-const alterar = () => {
-
+const exportar = () => {
+     window.open(`https://localhost:7247/api/presenca/relatorio-presenca?idTurma=${query.value.idTurma}&idTurmaHorario=${query.value.idTurmaHorario}`)
 }
 
-const toggleMenu = (model, event) => {
-    menuModel.value = [];
+// const toggleMenu = (model, event) => {
+//     menuModel.value = [];
 
-    let arrayMenu = [
-        {
-            label: "Justificar",
-            icon: "pi pi-pencil",
-            command: () => alterar(model),
-            rf: "RF003",
-        },
-    ];
+//     let arrayMenu = [
+//         {
+//             label: "Justificar",
+//             icon: "pi pi-pencil",
+//             command: () => alterar(model),
+//             rf: "RF003",
+//         },
+//     ];
 
-    menuModel.value = arrayMenu;
+//     menuModel.value = arrayMenu;
 
-    menu.value.toggle(event);
-};
+//     menu.value.toggle(event);
+// };
 
 const consultar = async () => {
     const response = await api.get('presenca/obter-registros-presenca', query.value);
@@ -86,7 +94,7 @@ const consultar = async () => {
     if (response.isSuccess) {
         presenca.value = response.data;
     } else {
-        toast.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao consultar turma' + response.error, life: 3000 });
+        toast.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao consultar' + response.error, life: 3000 });
     }
 }
 
@@ -144,7 +152,8 @@ onMounted(() => {
                         <label>Data</label>
                     </float-label>
                 </div>
-                <p-button label="consultar" :disabled="!query.idTurmaHorario" @click.stop="consultar"></p-button>
+                <p-button label="consultar" :disabled="query.idTurmaHorario == null" @click.stop="consultar"></p-button>
+                <p-button label="exportar" v-if="computedPresenca.length > 0" @click.stop="exportar"></p-button>
 
             </div>
         </Fieldset>
