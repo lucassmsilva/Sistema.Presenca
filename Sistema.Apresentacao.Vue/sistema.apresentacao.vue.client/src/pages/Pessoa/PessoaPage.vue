@@ -112,9 +112,10 @@ const submitForm = async () => {
             toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Pessoa alterada com sucesso', life: 3000 });
         } else {
             toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Pessoa cadastrada com sucesso', life: 3000 });
+            pessoas.value.unshift(response.data);
+
         }
 
-        pessoas.value.unshift(response.data);
         cadastro.value = false;
 
     } else {
