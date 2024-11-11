@@ -154,7 +154,7 @@ onMounted(() => {
         <div class="w-full flex flex-column gap-2">
             <h2 class="mt-2">Registro de Presenças/Faltas</h2>
 
-            <CustomDatatable :values="computedPresenca" groupByKey="data" rowSpanKey="turma">
+            <CustomDatatable :values="computedPresenca" groupByKey="data" rowSpanKey="turma" expanded>
 
                 <template #group-header="{ groupKey, isExpanded }">
                     <td colspan="5">
@@ -167,14 +167,14 @@ onMounted(() => {
                         </div>
                     </td>
                 </template>
-
+<!-- 
                 <CustomColumn header="Ações" :exportable="false" style="width: 3rem">
                     <template #body="slotProps">
                         <PButton type="button" @click="toggleMenu(slotProps.data, $event)" icon="pi pi-bars"
                             class="w-2rem h-2rem" title="Menu de Ações" />
                         <PMenu ref="menu" :model="menuModel" :popup="true" />
                     </template>
-                </CustomColumn>
+                </CustomColumn> -->
                 <CustomColumn header="Turma" accessorKey="turma.nomeTurma" :expanded="true"></CustomColumn>
                 <CustomColumn header="Sigla" accessorKey="turma.sigla" :expanded="true"></CustomColumn>
                 <CustomColumn header="Nome" accessorKey="nome"></CustomColumn>

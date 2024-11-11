@@ -1,6 +1,6 @@
 <!-- CustomDatatable.vue -->
 <script setup>
-import { computed, ref, useSlots } from 'vue'
+import { computed, ref, watch, useSlots } from 'vue'
 import {_get } from '@/helpers/objectHelpers.js';
 
 const props = defineProps({
@@ -10,6 +10,7 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
+  expanded: { type: Boolean, default: false }, 
 });
 
 const emits = defineEmits(["column-click", "row-click"]);
@@ -88,6 +89,17 @@ const handleRowClick = (item, column) => {
 const handleColumnClick = (item, column) => {
   emits("column-click", item, column);
 }
+
+watch(
+  () => [props.values, props.expanded],
+  () => {
+    console.log("")
+    groupedKeys.value.forEach((key) => {
+      expandedGroups.value[key] = props.expanded;
+    });
+  },
+  { immediate: true } // Executa imediatamente na inicialização do componente
+);
 
 </script>
 
